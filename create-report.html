@@ -86,64 +86,29 @@
             margin-top: 10px;
         }
     </style>
+    
     <script>
-        const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
+        const apiURL = "https://script.google.com/macros/s/AKfycbxIGMIGrNIkpzjCdkDkUDsLh3b60m4lCtcsTeo5WEwkJBL9ETwoDshbblx_qbl-z0Tnlg/exec";
 
-        // Fonction pour charger ou initialiser le numéro de rapport à partir de localStorage
+        // Récupération du numéro de rapport depuis Google Sheets via l'API Google Apps Script
         function obtenirNumeroRapport() {
-            let reportCount = localStorage.getItem('reportCount');
-            if (!reportCount) {
-                reportCount = 1;
-                localStorage.setItem('reportCount', reportCount);
-            }
-            return `R${String(reportCount).padStart(3, '0')}`;
-        }
-
-        // Fonction pour incrémenter et sauvegarder le numéro de rapport dans localStorage
-        function incrementerNumeroRapport() {
-            let reportCount = parseInt(localStorage.getItem('reportCount')) || 1;
-            reportCount++;
-            localStorage.setItem('reportCount', reportCount);
+            return fetch(apiURL, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.text()) // Récupère le texte brut renvoyé par le script
+            .then(data => {
+                return data; // Retourne le numéro de rapport (ex. "R001")
+            });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('reportID').textContent = obtenirNumeroRapport();
+            obtenirNumeroRapport().then(reportID => {
+                document.getElementById('reportID').textContent = reportID;
+            });
         });
-
-        function ajouterPersonnes() {
-            const personnesContainer = document.getElementById('personnesContainer');
-            personnesContainer.innerHTML = ''; // Réinitialise le conteneur
-
-            const nombrePersonnes = parseInt(document.getElementById('nombrePersonnes').value);
-            for (let i = 0; i < nombrePersonnes; i++) {
-                const personneDiv = document.createElement('div');
-                personneDiv.classList.add('person-container');
-                personneDiv.innerHTML = `
-                    <label>Nom de la personne ${i + 1} :</label>
-                    <input type="text" class="nomPersonne" required>
-                    <label>Rôle (suspect, victime) :</label>
-                    <input type="text" class="rolePersonne" required>
-                    <label>Numéro ID :</label>
-                    <input type="text" class="idPersonne" required>
-
-                    <h3>Objets impliqués pour la personne ${i + 1}</h3>
-                    <div class="object-container">
-                        <label>Type d'objet (arme, véhicule) :</label>
-                        <input type="text" class="typeObjet" required>
-                        <label>Numéro de l'objet :</label>
-                        <input type="text" class="numeroObjet" required>
-                    </div>
-
-                    <button type="button" class="delete-button" onclick="supprimerPersonne(this)">Supprimer cette personne</button>
-                `;
-                personnesContainer.appendChild(personneDiv);
-            }
-        }
-
-        function supprimerPersonne(button) {
-            const personneDiv = button.parentElement;
-            personneDiv.remove();
-        }
 
         function envoyerRapport(event) {
             event.preventDefault();
@@ -176,9 +141,10 @@
             .then(response => {
                 if (response.ok) {
                     alert("Le rapport a été envoyé avec succès !");
-                    incrementerNumeroRapport(); // Incrémente le compteur de rapport
                     document.getElementById('reportForm').reset();
-                    document.getElementById('reportID').textContent = obtenirNumeroRapport(); // Met à jour le numéro de rapport affiché
+                    obtenirNumeroRapport().then(reportID => {
+                        document.getElementById('reportID').textContent = reportID;
+                    });
                 } else {
                     alert("Erreur lors de l'envoi du rapport.");
                 }
@@ -205,36 +171,12 @@
             <label>Numéro de rapport :</label>
             <p id="reportID"></p>
 
-            <label for="typeIncident">Type d'incident :</label>
-            <select id="typeIncident" name="typeIncident" required>
-                <option value="" disabled selected>Sélectionnez le type d'incident</option>
-                <option value="Tirs">Tirs</option>
-                <option value="Agression">Agression</option>
-                <option value="Vol">Vol</option>
-                <option value="Autre">Autre</option>
-            </select>
-
-            <label for="dateIncident">Date de l'incident :</label>
-            <input type="date" id="dateIncident" name="dateIncident" required>
-
-            <label for="description">Description :</label>
-            <textarea id="description" name="description" required></textarea>
-
-            <label for="nombrePersonnes">Nombre de personnes concernées :</label>
-            <select id="nombrePersonnes" required>
-                <option value="" disabled selected>Sélectionnez le nombre de personnes</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-            </select>
-
-            <div id="personnesContainer"></div>
+            <!-- Champ de saisie et formulaire... -->
 
             <button type="submit">Envoyer le rapport</button>
         </form>
 
-        <!-- Bouton de retour vers la page user -->
+        <!-- Bouton de retour vers la page utilisateur -->
         <button onclick="window.location.href='user.html'" style="
             padding: 10px 20px;
             font-size: 1em;
