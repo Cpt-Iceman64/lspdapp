@@ -23,7 +23,7 @@ body {
 
 /* Taille du logo */
 .logo {
-    width: 60px; /* Taille augmentée */
+    width: 100px; /* Taille augmentée */
     height: auto;
     margin-bottom: 10px;
 }
