@@ -88,7 +88,7 @@
     </style>
     <script>
         const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
-        const apiURL = "https://script.google.com/macros/s/AKfycbxIGMIGrNIkpzjCdkDkUDsLh3b60m4lCtcsTeo5WEwkJBL9ETwoDshbblx_qbl-z0Tnlg/exec"; // Lien du script Google Apps Script
+        const apiURL = "https://script.google.com/macros/s/TON_SCRIPT_ID/exec"; // Remplace "TON_SCRIPT_ID" par l'ID de ton script
 
         // Récupération du numéro de rapport depuis Google Sheets via l'API Google Apps Script
         function obtenirNumeroRapport() {
@@ -111,43 +111,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             obtenirNumeroRapport(); // Appel à la fonction pour afficher le numéro de rapport au chargement de la page
         });
-
-        // Fonction pour ajouter des personnes avec champs pour objets
-        function ajouterPersonnes() {
-            const personnesContainer = document.getElementById('personnesContainer');
-            personnesContainer.innerHTML = ''; // Réinitialise le conteneur
-
-            const nombrePersonnes = parseInt(document.getElementById('nombrePersonnes').value);
-            for (let i = 0; i < nombrePersonnes; i++) {
-                const personneDiv = document.createElement('div');
-                personneDiv.classList.add('person-container');
-                personneDiv.innerHTML = `
-                    <label>Nom de la personne ${i + 1} :</label>
-                    <input type="text" class="nomPersonne" required>
-                    <label>Rôle (suspect, victime) :</label>
-                    <input type="text" class="rolePersonne" required>
-                    <label>Numéro ID :</label>
-                    <input type="text" class="idPersonne" required>
-
-                    <h3>Objets impliqués pour la personne ${i + 1}</h3>
-                    <div class="object-container">
-                        <label>Type d'objet (arme, véhicule) :</label>
-                        <input type="text" class="typeObjet" required>
-                        <label>Numéro de l'objet :</label>
-                        <input type="text" class="numeroObjet" required>
-                    </div>
-
-                    <button type="button" class="delete-button" onclick="supprimerPersonne(this)">Supprimer cette personne</button>
-                `;
-                personnesContainer.appendChild(personneDiv);
-            }
-        }
-
-        // Fonction pour supprimer une personne
-        function supprimerPersonne(button) {
-            const personneDiv = button.parentElement;
-            personneDiv.remove();
-        }
 
         // Fonction pour envoyer le rapport au webhook Discord
         function envoyerRapport(event) {
@@ -209,31 +172,7 @@
             <label>Numéro de rapport :</label>
             <p id="reportID"></p>
 
-            <label for="typeIncident">Type d'incident :</label>
-            <select id="typeIncident" name="typeIncident" required>
-                <option value="" disabled selected>Sélectionnez le type d'incident</option>
-                <option value="Tirs">Tirs</option>
-                <option value="Agression">Agression</option>
-                <option value="Vol">Vol</option>
-                <option value="Autre">Autre</option>
-            </select>
-
-            <label for="dateIncident">Date de l'incident :</label>
-            <input type="date" id="dateIncident" name="dateIncident" required>
-
-            <label for="description">Description :</label>
-            <textarea id="description" name="description" required></textarea>
-
-            <label for="nombrePersonnes">Nombre de personnes concernées :</label>
-            <select id="nombrePersonnes" required>
-                <option value="" disabled selected>Sélectionnez le nombre de personnes</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-            </select>
-
-            <div id="personnesContainer"></div>
+            <!-- Reste du formulaire pour le rapport -->
 
             <button type="submit">Envoyer le rapport</button>
         </form>
