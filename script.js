@@ -62,8 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // Envoyer notification Discord pour fin de service avec détails
             const messageFinService = `Agent hors service : ${document.getElementById("pseudo").textContent}\nDurée : ${dureeServiceElement.textContent}\nRapports effectués : ${compteurRapports}`;
             envoyerNotificationDiscord(webhookPriseService, messageFinService);
-
-            alert(`Fin de service.\nDurée: ${dureeServiceElement.textContent}\nRapports effectués: ${compteurRapports}`);
         }
     });
 
@@ -73,3 +71,4 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = "rapport.html";  // Redirection vers la page rapport
     });
 });
+
