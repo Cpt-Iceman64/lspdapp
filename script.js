@@ -67,20 +67,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Création de rapport
+    // Redirection vers la page de création de rapport
     const creerRapportButton = document.getElementById('creerRapport');
     creerRapportButton.addEventListener('click', function () {
-        if (enService) {
-            compteurRapports++;
-            rapportsEffectuesElement.textContent = compteurRapports;
-
-            // Envoyer notification Discord pour rapport créé
-            const messageRapport = `Nouveau rapport créé par l'agent : ${document.getElementById("pseudo").textContent}\nTotal rapports : ${compteurRapports}`;
-            envoyerNotificationDiscord(webhookRapport, messageRapport);
-
-            alert("Rapport créé.");
-        } else {
-            alert("Veuillez prendre le service pour créer un rapport.");
-        }
+        window.location.href = "rapport.html";  // Redirection vers la page rapport
     });
 });
