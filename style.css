@@ -1,237 +1,90 @@
-/* Style de base */
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #1e1f26;
-    color: #ffffff;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-/* Header */
-.header {
-    background-color: #2b2d3c;
-    padding: 15px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.header .logo {
-    width: 50px;
-}
-
-.header h1 {
-    color: #00aaff;
-    font-size: 2em;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.status-indicator {
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    color: #ffffff;
-    text-align: center;
-    font-size: 1em;
-    width: 150px;
-    margin: 20px auto;
-    animation: clignote 1s infinite;
-}
-
-/* Animation clignotante */
-@keyframes clignote {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-}
-
-/* Animation clignotante */
-@keyframes clignote {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-}
-
-/* Hors service - Rouge */
-.hors-service {
-    background-color: #f44336;
-}
-
-/* En service - Vert */
-.en-service {
-    background-color: #4CAF50;
-}
-/* Conteneur principal pour Desktop */
+/* Conteneur principal de la page */
 .container {
-    display: flex;
-    padding: 20px;
-    gap: 20px;
-}
-/* Styles pour les boutons */
-.controls button {
-    padding: 10px 20px;
-    font-size: 1em;
-    margin: 5px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    color: #ffffff;
-    background-color: #7289da;
+    display: flex; /* Aligne les éléments horizontalement */
+    flex-direction: column; /* Aligne les éléments en colonne */
+    align-items: center; /* Centre les éléments horizontalement */
+    gap: 10px; /* Espace entre les éléments */
+    padding: 20px; /* Espace interne du conteneur */
 }
 
-.controls button:hover {
-    background-color: #5a6fa7;
-}
-/* Sidebar */
-.sidebar {
-    width: 25%;
-    background-color: #2e303d;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+/* Boutons de service (Prendre le service et Fin de service) */
+.service-btn {
+    padding: 10px 20px; /* Espace interne autour du texte */
+    font-size: 1em; /* Taille de la police */
+    margin: 5px; /* Espace autour du bouton */
+    cursor: pointer; /* Curseur change en "pointer" (main) */
+    border: none; /* Supprime la bordure */
+    border-radius: 5px; /* Bords arrondis */
+    color: #ffffff; /* Couleur du texte en blanc */
+    width: 150px; /* Largeur des boutons */
+    transition: background-color 0.3s ease; /* Animation douce pour le changement de couleur */
 }
 
-.sidebar button {
-    padding: 12px;
-    font-size: 1em;
-    color: #ffffff;
-    background-color: #7289da;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: left;
-    transition: background-color 0.3s ease, transform 0.2s;
-    width: 100%;
+/* Couleur par défaut du bouton "Prendre le service" */
+#prendreService {
+    background-color: #7289da; /* Bleu */
 }
 
-.sidebar button:hover {
-    background-color: #5a6fa7;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+/* Couleur par défaut du bouton "Fin de service" */
+#finService {
+    background-color: #7289da; /* Bleu */
 }
 
-/* Agent summary */
-.agent-summary {
-    background-color: #3a3d4d;
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 20px;
-    font-size: 1em;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+/* Classe ajoutée pour le bouton actif "Prendre le service" */
+.service-on {
+    background-color: #4CAF50; /* Vert pour "Prendre le service" activé */
 }
 
-.agent-summary h3 {
-    color: #00aaff;
-    font-size: 1.2em;
+/* Classe ajoutée pour le bouton actif "Fin de service" */
+.service-off {
+    background-color: #f44336; /* Rouge pour "Fin de service" activé */
 }
 
-.agent-summary p {
-    margin: 5px 0;
+/* Indicateur de statut (En service / Hors service) */
+.status-indicator {
+    padding: 10px 20px; /* Espace interne autour du texte */
+    border-radius: 8px; /* Bords arrondis */
+    font-weight: bold; /* Texte en gras */
+    color: #ffffff; /* Couleur du texte en blanc */
+    text-align: center; /* Texte centré */
+    font-size: 1em; /* Taille de la police */
+    margin-top: 20px; /* Espace en haut */
+    width: 150px; /* Largeur de l'indicateur */
+    animation: clignote 1s infinite; /* Animation de clignotement */
 }
 
-/* Main content */
-.main-content {
-    width: 70%;
-    padding: 20px;
-    background-color: #2e303d;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+/* Animation de clignotement de l'indicateur */
+@keyframes clignote {
+    0% { opacity: 1; } /* Opacité à 100% */
+    50% { opacity: 0.5; } /* Opacité à 50% */
+    100% { opacity: 1; } /* Retour à 100% */
 }
 
-/* Conteneur de bienvenue */
-.welcome-container {
-    background: #2f3b4f;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: calc(100% - 40px);
-    max-width: 95%;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
-    border: 1px solid #00aaff;
-    margin: 0 auto;
+/* Indicateur de statut pour l'état "Hors service" */
+.hors-service {
+    background-color: #f44336; /* Fond rouge pour Hors service */
 }
 
-/* Bloc des alertes */
-.alert-box {
-    background-color: #3b414d;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    width: calc(100% - 40px);
-    max-width: 95%;
-    box-shadow: 0 3px 6px rgba(255, 0, 0, 0.3);
-    border: 1px solid #ff0000;
-    margin: 0 auto;
+/* Indicateur de statut pour l'état "En service" */
+.en-service {
+    background-color: #4CAF50; /* Fond vert pour En service */
 }
 
-/* Footer */
-.footer {
-    background-color: #2b2d3c;
-    text-align: center;
-    padding: 15px;
-    font-size: 0.9em;
-    color: #999;
-    margin-top: auto;
+/* Styles pour le logo et le titre du dashboard */
+.header {
+    display: flex; /* Aligne les éléments horizontalement */
+    align-items: center; /* Centre verticalement les éléments */
+    justify-content: center; /* Centre horizontalement les éléments */
+    gap: 10px; /* Espace entre le logo et le titre */
+    margin-bottom: 20px; /* Espace en bas du header */
 }
 
-/* --- Responsive pour mobile (portrait) --- */
-@media (max-width: 768px) {
-    /* Réorganise les éléments en une seule colonne */
-    .container {
-        flex-direction: column;
-        align-items: center;
-    }
+.logo {
+    width: 40px; /* Largeur du logo */
+    height: auto; /* Hauteur ajustée automatiquement */
+}
 
-    /* Sidebar devient un bloc au-dessus du main-content */
-    .sidebar {
-        width: 90%;
-        margin-bottom: 20px;
-    }
-
-    /* Main content prend toute la largeur */
-    .main-content {
-        width: 90%;
-        padding: 15px;
-    }
-
-    /* Ajustements de police pour mobile */
-    .header h1 {
-        font-size: 1.6em;
-    }
-
-    .sidebar button {
-        font-size: 0.9em;
-        padding: 10px;
-    }
-
-    .agent-summary h3 {
-        font-size: 1em;
-    }
-
-    .welcome-container h2 {
-        font-size: 1.4em;
-    }
-
-    .alert-box {
-        padding: 15px;
-        font-size: 0.9em;
-    }
-
-    .footer {
-        font-size: 0.8em;
-        padding: 10px;
-    }
+h1 {
+    font-size: 1.8em; /* Taille de la police pour le titre */
+    color: #ffffff; /* Couleur du texte en blanc */
 }
