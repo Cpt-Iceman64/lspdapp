@@ -3,40 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - LSPD Application</title>
+    <title>Tableau de bord - LSPD Application</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- En-tête avec le logo et le titre du tableau de bord -->
     <header class="header">
         <div class="logo">
-            <img src="logo.png" alt="LSPD Logo">
+            <img src="https://drive.google.com/uc?export=view&id=13gsxew30y1S2ilw2TrbM5PR_bQGYegpX" alt="LSPD Logo">
         </div>
-        <h1>Tableau de bord de l'utilisateur</h1>
+        <h1>Tableau de bord</h1>
+        <!-- Indicateur d'état de service -->
+        <div id="service-status" class="status-indicator">Hors service</div>
     </header>
 
+    <!-- Contenu principal de la page -->
     <main class="content">
-        <!-- Menu de navigation -->
-        <nav class="sidebar">
-            <h2>Menu</h2>
-            <ul>
-                <li><a href="user.html">Accueil</a></li>
-                <li><a href="create-report.html">Créer un Rapport</a></li>
-                <li><a href="database.html">Base de Données</a></li>
-                <li><button onclick="prendreService()">Prendre Service</button></li>
-                <li><button onclick="finirService()">Fin de Service</button></li>
-            </ul>
-        </nav>
+        <!-- Message de bienvenue -->
+        <section class="welcome-container">
+            <h2 id="welcome-message">Bienvenue, <span id="user-name">Nom de l'utilisateur</span> !</h2>
+            <div class="alert-box">
+                <h3>Alertes en cours</h3>
+                <p>Aucune alerte pour le moment.</p>
+            </div>
+        </section>
 
-        <!-- Section principale -->
-        <section class="main-content">
-            <h2>Bienvenue, [Nom de l'utilisateur] !</h2>
-            <p>Utilisez le menu pour naviguer dans l'application.</p>
+        <!-- Boutons pour prendre et finir le service -->
+        <section class="service-controls">
+            <button id="start-service" onclick="prendreService()">Prendre le service</button>
+            <button id="end-service" onclick="finirService()">Fin de service</button>
         </section>
     </main>
 
     <footer class="footer">
         <p>LSPD - Tous droits réservés © 2024</p>
     </footer>
-    <script src="script.js"></script>
+
+    <!-- Script pour gérer les interactions et récupérer les données utilisateur -->
+    <script>
+        // Données fictives de l'utilisateur (remplacer par les données de Discord)
+        const utilisateurDiscord = {
+            nom: "iceman64" // Nom de l'utilisateur récupéré via l'API Discord
+        };
+
+        // Mise à jour du nom de l'utilisateur dans le message de bienvenue
+        document.getElementById("user-name").textContent = utilisateurDiscord.nom;
+
+        // Fonction pour gérer l'état de service
+        let enService = false;
+
+        function prendreService() {
+            enService = true;
+            document.getElementById("service-status").textContent = "En service";
+            document.getElementById("service-status").classList.add("service-on");
+            document.getElementById("service-status").classList.remove("service-off");
+        }
+
+        function finirService() {
+            enService = false;
+            document.getElementById("service-status").textContent = "Hors service";
+            document.getElementById("service-status").classList.add("service-off");
+            document.getElementById("service-status").classList.remove("service-on");
+        }
+    </script>
 </body>
 </html>
