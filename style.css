@@ -41,14 +41,13 @@ body {
 }
 
 .btn-primary {
-    background-color: #7289da;
-    border: none;
+    background-color: #4CAF50; /* Vert */
 }
 
 .btn-danger {
-    background-color: #f44336;
-    border: none;
+    background-color: #f44336; /* Rouge */
 }
+
 
 .btn-secondary {
     background-color: #4b5058;
