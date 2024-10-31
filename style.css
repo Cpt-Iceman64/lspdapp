@@ -104,26 +104,27 @@ body {
 
 /* Main content */
 .main-content {
-    width: 75%;
+    width: 70%;
     padding: 20px;
     background-color: #2e303d;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    align-items: center; /* Centre les éléments horizontalement */
+    gap: 20px; /* Espace entre chaque élément dans .main-content */
 }
 
 /* Conteneur de bienvenue */
 .welcome-container {
     background: #2f3b4f;
-    padding: 25px;
-    border-radius: 12px;
+    padding: 20px;
+    border-radius: 10px;
     text-align: center;
-    width: 100%;
+    width: calc(100% - 10px); /* Laisse un espace de 5px de chaque côté */
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
-    border: 1px solid #00aaff;
+    border: 1px solid #00aaff; /* Bordure bleue */
+    margin-bottom: 10px; /* Espace sous le bloc Bienvenue */
 }
 
 .welcome-container h2 {
@@ -135,12 +136,11 @@ body {
 .alert-box {
     background-color: #3b414d;
     padding: 20px;
-    margin-top: 15px;
     border-radius: 8px;
-    box-shadow: 0 3px 6px rgba(255, 204, 0, 0.3); /* Effet ombre jaune pour les alertes */
+    box-shadow: 0 3px 6px rgba(255, 0, 0, 0.3); /* Ombre rouge pour les alertes */
     text-align: center;
-    width: 100%;
-    border: 1px solid #ffcc00;
+    width: calc(100% - 10px); /* Laisse un espace de 5px de chaque côté */
+    border: 1px solid #ff0000; /* Bordure rouge */
 }
 
 /* Footer */
