@@ -3,34 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Utilisateur</title>
+    <title>Tableau de bord de l'agent</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
         }
-        .container {
-            text-align: center;
+        .dashboard {
+            width: 80%;
+            max-width: 1000px;
             background: #ffffff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        h1 {
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
             color: #333;
         }
-        button {
-            margin-top: 20px;
+        .status-section, .actions-section, .alerts-section, .reports-section {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #e0e0e0;
+        }
+        h2 {
+            color: #333;
+            font-size: 1.2em;
+        }
+        .status-buttons button, .action-buttons button {
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
             border: none;
             border-radius: 5px;
+            margin: 10px 5px 0 0;
         }
         .service-button {
             background-color: #4CAF50;
@@ -40,12 +55,14 @@
             background-color: #f44336;
             color: white;
         }
-        a {
+        .section-link {
             display: inline-block;
-            margin-top: 20px;
-            color: #4CAF50;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
             text-decoration: none;
-            font-weight: bold;
         }
     </style>
     <script>
@@ -97,17 +114,33 @@
     </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Bienvenue, <span id="username">...</span> !</h1>
-        <img id="avatar" src="" alt="Avatar" width="100" height="100" style="border-radius: 50%; margin-top: 20px;">
-        
-        <p id="serviceStatus">...</p>
-        
-        <button class="service-button" onclick="prendreService()">Prendre le service</button>
-        <button class="end-service-button" onclick="finirService()">Fin du service</button>
-        
-        <!-- Lien vers la page des alertes -->
-        <a href="alerts.html">Voir les alertes en cours</a>
+    <div class="dashboard">
+        <!-- En-tête utilisateur avec avatar et nom -->
+        <div class="header">
+            <h1>Tableau de bord de l'agent - <span id="username">...</span></h1>
+            <img id="avatar" src="" alt="Avatar" width="80" height="80" style="border-radius: 50%; margin-top: 10px;">
+        </div>
+
+        <!-- Section pour prendre et finir le service -->
+        <div class="status-section">
+            <h2>Statut de service</h2>
+            <p id="serviceStatus">...</p>
+            <div class="status-buttons">
+                <button class="service-button" onclick="prendreService()">Prendre le service</button>
+                <button class="end-service-button" onclick="finirService()">Fin du service</button>
+            </div>
+        </div>
+
+        <!-- Section des actions principales -->
+        <div class="actions-section">
+            <h2>Actions</h2>
+            <div class="action-buttons">
+                <a href="alerts.html" class="section-link">Voir les alertes en cours</a>
+                <a href="create-report.html" class="section-link">Créer un rapport</a>
+                <a href="database.html" class="section-link">Accéder à la base de données</a>
+                <a href="reports.html" class="section-link">Voir les rapports existants</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>
