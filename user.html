@@ -1,34 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css"> <!-- Lien vers le CSS -->
+</head>
 <body>
-    <div class="header">
-        <img class="logo" src="https://drive.google.com/uc?export=view&id=13gsxew30y1S2ilw2TrbM5PR_bQGYegpX" alt="LSPD Logo">
+
+    <!-- En-tête avec le logo et le titre -->
+    <header class="header">
+        <img src="https://drive.google.com/uc?export=view&id=13gsxew30y1S2ilw2TrbM5PR_bQGYegpX" alt="LSPD Logo" class="logo">
         <h1>DASHBOARD</h1>
-    </div>
-    
+    </header>
+
+    <!-- Conteneur principal pour la disposition 1/3 - 2/3 -->
     <div class="container">
-        <!-- Colonne gauche : Boutons et récap -->
+        
+        <!-- Colonne de gauche : Boutons et récapitulatif -->
         <div class="left-panel">
             <button id="prendreService" class="service-btn service-off">Prendre le service</button>
             <button id="finService" class="service-btn service-off">Fin de service</button>
+            <button class="service-btn">Créer un rapport</button>
+            
             <div class="recap">
                 <h2>Récap de l'agent</h2>
-                <p>État : Hors service</p>
-                <p>Durée en service : 00:00:00</p>
-                <p>Rapports effectués : 0</p>
+                <p>État : <span id="etat">Hors service</span></p>
+                <p>Durée en service : <span id="duree">00:00:00</span></p>
+                <p>Rapports effectués : <span id="rapports">0</span></p>
             </div>
         </div>
         
-        <!-- Colonne droite : Tableau de bord et alertes -->
+        <!-- Colonne de droite : Bienvenue et alertes -->
         <div class="right-panel">
             <div class="welcome">
-                Bienvenue, iceman64 !
+                Bienvenue, <span id="username">iceman64</span> !
             </div>
             <div class="alert-box">
-                Aucune alerte pour le moment.
+                <h3>Alertes en cours</h3>
+                <p>Aucune alerte pour le moment.</p>
             </div>
         </div>
     </div>
-    
+
+    <!-- Pied de page -->
     <footer>
         LSPD - Tous droits réservés © 2024
     </footer>
+
+    <!-- Script JavaScript pour la gestion du service et connexion Discord -->
+    <script src="script.js"></script>
 </body>
+</html>
