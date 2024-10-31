@@ -68,6 +68,15 @@
         // URL du webhook pour les rapports
         const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
 
+        // Vérification de l'état de service
+        window.onload = function() {
+            const enService = localStorage.getItem('enService') === 'true';
+            if (!enService) {
+                alert("Vous devez être en service pour créer un rapport.");
+                window.location.href = 'user.html'; // Redirige vers la page user.html pour prendre le service
+            }
+        };
+
         function envoyerRapport() {
             // Récupère les valeurs du formulaire
             const titre = document.getElementById('titre').value;
