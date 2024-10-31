@@ -101,7 +101,7 @@
 
         <form id="reportForm">
             <label for="agent">Nom de l'agent :</label>
-            <input type="text" id="agent" name="agent" placeholder="Entrez votre nom" required>
+            <input type="text" id="agent" name="agent" readonly required>
 
             <label>Numéro de rapport :</label>
             <p id="reportID">R001</p>
@@ -151,11 +151,21 @@
         const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
 
         let reportCount = 1;
+        let reportsEffectues = 0;
+
+        // Fonction pour récupérer automatiquement le nom d'utilisateur
+        function recupererNomUtilisateur() {
+            // Supposons que tu as déjà le nom via la session Discord
+            const nomUtilisateur = "iceman64"; // À remplacer par la variable de session réelle
+            document.getElementById("agent").value = nomUtilisateur;
+        }
+
         function genererIDRapport() {
             return `R${String(reportCount).padStart(3, '0')}`;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            recupererNomUtilisateur();
             document.getElementById('reportID').textContent = genererIDRapport();
             document.getElementById('nombrePersonnes').addEventListener('change', ajouterPersonnes);
             document.getElementById('reportForm').addEventListener('submit', envoyerRapport);
@@ -214,35 +224,37 @@
 
             fetch(webhookRapport, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ content: message })
             })
             .then(response => {
                 if (response.ok) {
-                    displayAlert("Le rapport a été envoyé avec succès !");
+                    afficherMessage("Le rapport a été envoyé avec succès !");
+                    reportsEffectues++;
+                    mettreAJourRecap();
                     reportCount++;
                     document.getElementById('reportForm').reset();
                     document.getElementById('reportID').textContent = genererIDRapport();
                 } else {
-                    displayAlert("Erreur lors de l'envoi du rapport.", true);
+                    afficherMessage("Erreur lors de l'envoi du rapport.", true);
                 }
             })
             .catch(error => {
                 console.error('Erreur lors de l\'envoi du webhook:', error);
-                displayAlert("Erreur lors de l'envoi du rapport.", true);
+                afficherMessage("Erreur lors de l'envoi du rapport.", true);
             });
         }
 
-        function displayAlert(message, isError = false) {
+        function afficherMessage(message, isError = false) {
             const alertBox = document.getElementById('alertBox');
             alertBox.textContent = message;
             alertBox.style.backgroundColor = isError ? '#f44336' : '#4caf50';
             alertBox.style.display = 'block';
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 3000);
+            setTimeout(() => { alertBox.style.display = 'none'; }, 3000);
+        }
+
+        function mettreAJourRecap() {
+            document.querySelector('#rapportEffectues').textContent = `Rapports effectués : ${reportsEffectues}`;
         }
     </script>
 </body>
