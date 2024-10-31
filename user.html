@@ -1,47 +1,39 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="style.css"> <!-- Lien vers le fichier CSS -->
-</head>
 <body>
-    <!-- En-tête avec logo et titre -->
+    <!-- En-tête -->
     <header>
-        <img src="https://drive.google.com/uc?export=view&id=13gsxew30y1S2ilw2TrbM5PR_bQGYegpX" alt="LSPD Logo" id="logo">
+        <img src="https://media.discordapp.net/attachments/1301595212333842482/1301595288494145590/Logo_LSPDApp-removebg-preview.png?format=webp&quality=lossless" alt="LSPD Logo">
         <h1>DASHBOARD</h1>
         <h2 id="status">Hors service</h2>
     </header>
 
-    <!-- Section des boutons à gauche -->
-    <section id="sidebar">
-        <button id="prendreService">Prendre le service</button>
-        <button id="finService">Fin de service</button>
-        <button id="creerRapport" onclick="window.location.href='rapport.html'">Créer un rapport</button>
-        <button id="fichesCitoyens" onclick="window.location.href='fiches.html'">Fiches</button>
-    </section>
-
     <!-- Conteneur principal -->
-    <main>
-        <h3>Bienvenue, <span id="pseudo">Utilisateur</span> !</h3>
-        <div id="alertes">
-            <h4>Alertes en cours</h4>
-            <p>Aucune alerte pour le moment.</p>
-        </div>
-        <div id="recap">
-            <h4>Récap de l'agent</h4>
-            <p>État : <span id="etatService">Hors service</span></p>
-            <p>Durée en service : <span id="dureeService">00:00:00</span></p>
-            <p>Rapports effectués : <span id="rapportsEffectues">0</span></p>
-        </div>
-    </main>
+    <div id="main-container">
+        <!-- Barre latérale (1/3 gauche) -->
+        <section id="sidebar">
+            <button id="prendreService">Prendre le service</button>
+            <button id="finService">Fin de service</button>
+            <button id="creerRapport">Créer un rapport</button>
+            <button id="fichesCitoyens">Fiches</button>
+        </section>
 
+        <!-- Zone de contenu (2/3 droite) -->
+        <main>
+            <h3>Bienvenue, <span id="pseudo">Utilisateur</span> !</h3>
+            <div id="alertes">
+                <h4>Alertes en cours</h4>
+                <p>Aucune alerte pour le moment.</p>
+            </div>
+            <div id="recap">
+                <h4>Récap de l'agent</h4>
+                <p>État : <span id="etatService">Hors service</span></p>
+                <p>Durée en service : <span id="dureeService">00:00:00</span></p>
+                <p>Rapports effectués : <span id="rapportsEffectues">0</span></p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Pied de page -->
     <footer>
         <p>LSPD - Tous droits réservés © 2024</p>
     </footer>
-
-    <!-- Lien vers le JavaScript -->
-    <script src="script.js"></script>
 </body>
-</html>
