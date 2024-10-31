@@ -110,6 +110,37 @@
                 document.getElementById('serviceStatus').textContent = 'Hors service';
                 document.getElementById('serviceStatus').style.color = 'red';
             }
+
+            function envoyerWebhook(message, webhookUrl) {
+    fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            content: message
+        })
+    }).catch(error => console.error('Erreur lors de l\'envoi du webhook:', error));
+}
+
+// Remplace ces URL par celles de tes webhooks Discord pour la prise et fin de service
+const webhookPriseService = 'URL_DU_WEBHOOK_PRISE_SERVICE';
+const webhookFinService = 'URL_DU_WEBHOOK_FIN_SERVICE';
+
+function prendreService() {
+    localStorage.setItem('enService', 'true');
+    document.getElementById('serviceStatus').textContent = 'En service';
+    document.getElementById('serviceStatus').style.color = 'green';
+    envoyerWebhook(`Agent ${document.getElementById('username').textContent} a pris son service.`, webhookPriseService);
+}
+
+function finirService() {
+    localStorage.setItem('enService', 'false');
+    document.getElementById('serviceStatus').textContent = 'Hors service';
+    document.getElementById('serviceStatus').style.color = 'red';
+    envoyerWebhook(`Agent ${document.getElementById('username').textContent} a terminé son service.`, webhookFinService);
+}
+
         };
     </script>
 </head>
