@@ -3,38 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de bord - LSPD Application</title>
+    <title>Dashboard - LSPD Application</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- En-tête avec le logo et le titre du tableau de bord -->
     <header class="header">
-        <div class="logo">
-            <img src="https://drive.google.com/uc?export=view&id=13gsxew30y1S2ilw2TrbM5PR_bQGYegpX" alt="LSPD Logo">
-        </div>
-        <h1>Tableau de bord</h1>
-        <!-- Indicateur d'état de service -->
+        <img src="https://drive.google.com/uc?export=view&id=13gsxew30y1S2ilw2TrbM5PR_bQGYegpX" alt="LSPD Logo" class="logo">
+        <h1>Dashboard</h1>
         <div id="service-status" class="status-indicator">Hors service</div>
     </header>
 
-    <!-- Contenu principal de la page -->
-    <main class="content">
-        <!-- Message de bienvenue -->
-        <section class="welcome-container">
-            <h2 id="welcome-message">Bienvenue, <span id="user-name">Nom de l'utilisateur</span> !</h2>
-            <div class="alert-box">
-                <h3>Alertes en cours</h3>
-                <p>Aucune alerte pour le moment.</p>
-            </div>
-        </section>
+    <!-- Contenu principal divisé en deux colonnes -->
+    <div class="container">
+        <!-- Barre latérale gauche pour les boutons -->
+        <aside class="sidebar">
+            <button onclick="prendreService()">Prendre le service</button>
+            <button onclick="finirService()">Fin de service</button>
+            <button onclick="window.location.href='create-report.html'">Créer un rapport</button>
+            <button onclick="window.location.href='alerts.html'">Voir les alertes</button>
+            <button onclick="window.location.href='database.html'">Base de données</button>
+        </aside>
 
-        <!-- Boutons pour prendre et finir le service -->
-        <section class="service-controls">
-            <button id="start-service" onclick="prendreService()">Prendre le service</button>
-            <button id="end-service" onclick="finirService()">Fin de service</button>
-        </section>
-    </main>
+        <!-- Section principale pour le contenu central -->
+        <main class="main-content">
+            <section class="welcome-container">
+                <h2 id="welcome-message">Bienvenue, <span id="user-name">Nom de l'utilisateur</span> !</h2>
+                <div class="alert-box">
+                    <h3>Alertes en cours</h3>
+                    <p>Aucune alerte pour le moment.</p>
+                </div>
+            </section>
+        </main>
+    </div>
 
+    <!-- Pied de page centré -->
     <footer class="footer">
         <p>LSPD - Tous droits réservés © 2024</p>
     </footer>
