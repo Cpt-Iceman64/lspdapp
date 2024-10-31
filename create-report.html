@@ -72,7 +72,8 @@
         }
     </style>
     <script>
-        // Fonction pour afficher les champs conditionnels en fonction du type d'incident
+        const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
+
         function afficherChampsConditionnels() {
             const typeIncident = document.getElementById('typeIncident').value;
             document.getElementById('serialField').style.display = (typeIncident === 'Tirs' || typeIncident === 'Agression avec arme') ? 'block' : 'none';
@@ -80,23 +81,60 @@
             document.getElementById('idField').style.display = (typeIncident !== '') ? 'block' : 'none';
         }
 
-        // Fonction de vérification pour la cohérence des données (exemple simplifié)
         function verifierCohérence() {
             const nomCitoyen = document.getElementById('citoyen').value;
             const numeroID = document.getElementById('numeroID').value;
             
-            // Simuler une vérification de cohérence (exemple avec des données statiques)
             if (nomCitoyen === "John Doe" && numeroID !== "123456789") {
                 document.getElementById('errorMessage').textContent = "Attention : possible usurpation d'identité pour " + nomCitoyen + ".";
             } else {
-                document.getElementById('errorMessage').textContent = ""; // Pas de problème
+                document.getElementById('errorMessage').textContent = ""; 
             }
         }
 
-        // Appel de la fonction lors de la sélection du type d'incident
+        function envoyerRapport(event) {
+            event.preventDefault();
+
+            const titre = document.getElementById('titre').value;
+            const citoyen = document.getElementById('citoyen').value;
+            const typeIncident = document.getElementById('typeIncident').value;
+            const dateIncident = document.getElementById('dateIncident').value;
+            const description = document.getElementById('description').value;
+            const serialNumber = document.getElementById('serialNumber').value;
+            const plaque = document.getElementById('plaque').value;
+            const numeroID = document.getElementById('numeroID').value;
+
+            const message = `**Nouveau rapport créé :**\n**Titre :** ${titre}\n**Citoyen concerné :** ${citoyen}\n**Type d'incident :** ${typeIncident}\n**Date :** ${dateIncident}\n**Description :** ${description}` +
+                (serialNumber ? `\n**Numéro de série de l'arme :** ${serialNumber}` : '') +
+                (plaque ? `\n**Plaque d'immatriculation :** ${plaque}` : '') +
+                (numeroID ? `\n**Numéro de carte d'identité :** ${numeroID}` : '');
+
+            fetch(webhookRapport, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ content: message })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Le rapport a été envoyé avec succès !");
+                    document.getElementById('reportForm').reset();
+                    afficherChampsConditionnels();
+                } else {
+                    alert("Erreur lors de l'envoi du rapport.");
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de l\'envoi du webhook:', error);
+                alert("Erreur lors de l'envoi du rapport.");
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('typeIncident').addEventListener('change', afficherChampsConditionnels);
-            document.getElementById('numeroID').addEventListener('blur', verifierCohérence); // Vérifie la cohérence après saisie du numéro d'identité
+            document.getElementById('numeroID').addEventListener('blur', verifierCohérence);
+            document.getElementById('reportForm').addEventListener('submit', envoyerRapport);
         });
     </script>
 </head>
