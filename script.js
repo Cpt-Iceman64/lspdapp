@@ -1,98 +1,51 @@
-// Webhook pour Discord
-const webhookPriseFinService = 'https://discord.com/api/webhooks/1301524280529518602/GrQETveJvGKN4CgX-BNQuqafwTP6j2e_IaaexX3tbrG6iGobixweOc_OrTg6CwTKwNMP';
-let startTime;
-let isServiceOn = false; // Variable pour vérifier si l'agent est en service
-
-// Fonction pour récupérer le pseudo de l'utilisateur dans le serveur Discord
-async function obtenirPseudoServeur() {
-    const accessToken = localStorage.getItem('discord_access_token');
-    const guildId = 'YOUR_GUILD_ID'; // Remplace par l'ID de ton serveur Discord
-
-    if (accessToken) {
-        try {
-            const response = await fetch(`https://discord.com/api/v10/users/@me/guilds/${guildId}/member`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                const pseudo = data.nick || data.user.username;
-                document.getElementById('pseudo').textContent = pseudo;
-            } else {
-                console.error("Erreur lors de la récupération du pseudo :", response.statusText);
-            }
-        } catch (error) {
-            console.error("Erreur lors de la requête :", error);
-        }
-    }
-}
-
-// Met à jour l'état du service et envoie une notification à Discord
-function updateStatus(isInService) {
-    const pseudo = document.getElementById('pseudo').textContent;
-    const etatService = document.getElementById('etatService');
+// Initialisation des éléments
+document.addEventListener('DOMContentLoaded', function () {
     const statusElement = document.getElementById('status');
+    const prendreServiceButton = document.getElementById('prendreService');
+    const finServiceButton = document.getElementById('finService');
+    const dureeServiceElement = document.getElementById('dureeService');
+    const rapportsEffectuesElement = document.getElementById('rapportsEffectues');
 
-    if (isInService) {
-        startTime = new Date(); // Démarre le chrono
-        isServiceOn = true;
-        etatService.textContent = 'En service';
-        statusElement.textContent = "En service";
-        statusElement.style.color = "green";
-        document.getElementById("prendreService").style.backgroundColor = "green";
-        document.getElementById("finService").style.backgroundColor = "";
-        envoyerNotificationDiscord(`${pseudo} est en service !`);
-    } else {
-        const dureeService = calculerDureeService();
-        isServiceOn = false;
-        etatService.textContent = 'Hors service';
-        statusElement.textContent = "Hors service";
-        statusElement.style.color = "red";
-        document.getElementById("prendreService").style.backgroundColor = "";
-        document.getElementById("finService").style.backgroundColor = "red";
-        envoyerNotificationDiscord(`${pseudo} est hors service. Durée : ${dureeService}`);
-    }
-}
+    let enService = false;
+    let compteurRapports = 0;
+    let dureeEnService = 0;
+    let intervalId;
 
-// Calculer la durée en service
-function calculerDureeService() {
-    const now = new Date();
-    const difference = new Date(now - startTime);
-
-    const heures = String(difference.getUTCHours()).padStart(2, '0');
-    const minutes = String(difference.getUTCMinutes()).padStart(2, '0');
-    const secondes = String(difference.getUTCSeconds()).padStart(2, '0');
-
-    return `${heures}:${minutes}:${secondes}`;
-}
-
-// Envoie une notification au webhook Discord
-function envoyerNotificationDiscord(message) {
-    fetch(webhookPriseFinService, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ content: message })
-    })
-    .then(response => {
-        if (!response.ok) {
-            console.error("Erreur lors de l'envoi au webhook Discord");
+    // Prendre le service
+    prendreServiceButton.addEventListener('click', function () {
+        if (!enService) {
+            enService = true;
+            statusElement.textContent = "En service";
+            statusElement.style.color = "green";
+            compteurRapports = 0;
+            dureeEnService = 0;
+            intervalId = setInterval(() => {
+                dureeEnService++;
+                dureeServiceElement.textContent = new Date(dureeEnService * 1000).toISOString().substr(11, 8);
+            }, 1000);
         }
-    })
-    .catch(error => console.error("Erreur de la requête Discord:", error));
-}
+    });
 
-// Gérer les clics sur les boutons
-document.getElementById('prendreService').addEventListener('click', () => {
-    if (!isServiceOn) updateStatus(true);
-});
-document.getElementById('finService').addEventListener('click', () => {
-    if (isServiceOn) updateStatus(false);
-});
+    // Fin du service
+    finServiceButton.addEventListener('click', function () {
+        if (enService) {
+            enService = false;
+            statusElement.textContent = "Hors service";
+            statusElement.style.color = "red";
+            clearInterval(intervalId);
+            alert(`Fin de service.\nDurée: ${dureeServiceElement.textContent}\nRapports effectués: ${compteurRapports}`);
+        }
+    });
 
-// Charger le pseudo au chargement de la page
-obtenirPseudoServeur();
+    // Création de rapport
+    const creerRapportButton = document.getElementById('creerRapport');
+    creerRapportButton.addEventListener('click', function () {
+        if (enService) {
+            compteurRapports++;
+            rapportsEffectuesElement.textContent = compteurRapports;
+            alert("Rapport créé.");
+        } else {
+            alert("Veuillez prendre le service pour créer un rapport.");
+        }
+    });
+});
