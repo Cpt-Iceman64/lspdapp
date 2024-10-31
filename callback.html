@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Callback</title>
     <script>
-        // Récupération du code d'autorisation depuis l'URL
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
 
         if (code) {
+            console.log('Code d\'autorisation reçu:', code);
+
             // Échange le code contre un token d'accès
             fetch(`https://discord.com/api/oauth2/token`, {
                 method: 'POST',
@@ -18,21 +19,27 @@
                 },
                 body: new URLSearchParams({
                     client_id: '1301476211695947806',
-                    client_secret: 'PR8J93hFuPzDF7YAMK4_eAj1wd3o6vo2', // Remplace par ton Client Secret
+                    client_secret: 'PR8J93hFuPzDF7YAMK4_eAj1wd3o6vo2', // Ton Client Secret
                     grant_type: 'authorization_code',
                     code: code,
                     redirect_uri: 'https://cpt-iceman64.github.io/lspdapp/callback',
                     scope: 'identify'
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('Réponse reçue:', response); // Log la réponse brute
+                return response.json();
+            })
             .then(data => {
+                console.log('Données reçues:', data); // Affiche les données de la réponse
+
                 const accessToken = data.access_token;
                 if (accessToken) {
-                    // Stocke le token d'accès pour récupérer les infos de l'utilisateur
+                    console.log('Token d\'accès reçu:', accessToken);
                     localStorage.setItem('discord_token', accessToken);
-                    // Redirige vers la page d'accueil ou une page utilisateur
                     window.location.href = '/lspdapp/user.html';
+                } else {
+                    console.error('Token d\'accès non reçu');
                 }
             })
             .catch(error => {
