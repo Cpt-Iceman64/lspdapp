@@ -50,6 +50,7 @@ body {
     display: flex;
     flex: 1;
     padding: 20px;
+    height: 100%;
 }
 
 .sidebar {
@@ -76,6 +77,24 @@ body {
     background-color: #5a6fa7;
 }
 
+.agent-summary {
+    background-color: #3a3d4d;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.agent-summary h3 {
+    margin: 0;
+    color: #00aaff;
+}
+
+.agent-summary p {
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+/* Section principale */
 .main-content {
     width: 70%;
     padding: 20px;
@@ -91,6 +110,7 @@ body {
     border-radius: 10px;
     text-align: center;
     width: 100%;
+    height: 100%;
 }
 
 .welcome-container h2 {
