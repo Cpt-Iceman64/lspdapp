@@ -1,74 +1,100 @@
-// Webhook URLs
-const webhookPriseService = 'https://discord.com/api/webhooks/1301524280529518602/GrQETveJvGKN4CgX-BNQuqafwTP6j2e_IaaexX3tbrG6iGobixweOc_OrTg6CwTKwNMP';
 const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
 
-// Initialisation des éléments
-document.addEventListener('DOMContentLoaded', function () {
-    const statusElement = document.getElementById('status');
-    const prendreServiceButton = document.getElementById('prendreService');
-    const finServiceButton = document.getElementById('finService');
-    const dureeServiceElement = document.getElementById('dureeService');
-    const rapportsEffectuesElement = document.getElementById('rapportsEffectues');
+let reportCount = 1;
+let reportsEffectues = 0;
 
-    let enService = false;
-    let compteurRapports = 0;
-    let dureeEnService = 0;
-    let intervalId;
+// Fonction pour récupérer automatiquement le nom d'utilisateur depuis Discord
+function recupererNomUtilisateur() {
+    // Remplace par la méthode réelle pour récupérer le nom d'utilisateur
+    const nomUtilisateur = sessionStorage.getItem("discordUsername") || "Utilisateur";
+    document.getElementById("agent").value = nomUtilisateur;
+}
 
-    // Fonction pour envoyer une notification à Discord
-    function envoyerNotificationDiscord(webhookUrl, message) {
-        fetch(webhookUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ content: message })
-        })
-        .then(response => {
-            if (!response.ok) {
-                console.error("Erreur lors de l'envoi au webhook Discord :", response.statusText);
-            }
-        })
-        .catch(error => console.error("Erreur lors de la connexion au webhook Discord :", error));
-    }
+function genererIDRapport() {
+    return `R${String(reportCount).padStart(3, '0')}`;
+}
 
-    // Prendre le service
-    prendreServiceButton.addEventListener('click', function () {
-        if (!enService) {
-            enService = true;
-            statusElement.textContent = "En service";
-            statusElement.style.color = "green";
-            compteurRapports = 0;
-            dureeEnService = 0;
-            intervalId = setInterval(() => {
-                dureeEnService++;
-                dureeServiceElement.textContent = new Date(dureeEnService * 1000).toISOString().substr(11, 8);
-            }, 1000);
-
-            // Envoyer notification Discord pour prise de service
-            const messagePriseService = `Agent en service : ${document.getElementById("pseudo").textContent}`;
-            envoyerNotificationDiscord(webhookPriseService, messagePriseService);
-        }
-    });
-
-    // Fin du service
-    finServiceButton.addEventListener('click', function () {
-        if (enService) {
-            enService = false;
-            statusElement.textContent = "Hors service";
-            statusElement.style.color = "red";
-            clearInterval(intervalId);
-
-            // Envoyer notification Discord pour fin de service avec détails
-            const messageFinService = `Agent hors service : ${document.getElementById("pseudo").textContent}\nDurée : ${dureeServiceElement.textContent}\nRapports effectués : ${compteurRapports}`;
-            envoyerNotificationDiscord(webhookPriseService, messageFinService);
-        }
-    });
-
-    // Redirection vers la page de création de rapport
-    const creerRapportButton = document.getElementById('creerRapport');
-    creerRapportButton.addEventListener('click', function () {
-        window.location.href = "reports.html";  // Redirection vers la page rapport
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    recupererNomUtilisateur();
+    document.getElementById('reportID').textContent = genererIDRapport();
+    document.getElementById('nombrePersonnes').addEventListener('change', ajouterPersonnes);
+    document.getElementById('reportForm').addEventListener('submit', envoyerRapport);
 });
 
+function ajouterPersonnes() {
+    const personnesContainer = document.getElementById('personnesContainer');
+    personnesContainer.innerHTML = '';
+
+    const nombrePersonnes = parseInt(document.getElementById('nombrePersonnes').value);
+    for (let i = 0; i < nombrePersonnes; i++) {
+        const personneDiv = document.createElement('div');
+        personneDiv.classList.add('person-container');
+        personneDiv.innerHTML = `
+            <label>Nom de la personne ${i + 1} :</label>
+            <input type="text" class="nomPersonne" required>
+            <label>Rôle (suspect, victime) :</label>
+            <input type="text" class="rolePersonne" required>
+            <label>Numéro ID :</label>
+            <input type="text" class="idPersonne" required>
+            <h3>Objets impliqués pour la personne ${i + 1}</h3>
+            <label>Type d'objet (arme, véhicule) :</label>
+            <input type="text" class="typeObjet" required>
+            <label>Numéro de l'objet :</label>
+            <input type="text" class="numeroObjet" required>
+            <button type="button" class="delete-button" onclick="supprimerPersonne(this)">Supprimer cette personne</button>
+        `;
+        personnesContainer.appendChild(personneDiv);
+    }
+}
+
+function supprimerPersonne(button) {
+    const personneDiv = button.parentElement;
+    personneDiv.remove();
+}
+
+function envoyerRapport(event) {
+    event.preventDefault();
+    const agent = document.getElementById('agent').value;
+    const reportID = document.getElementById('reportID').textContent;
+    const typeIncident = document.getElementById('typeIncident').value;
+    const dateIncident = document.getElementById('dateIncident').value;
+    const description = document.getElementById('description').value;
+
+    let personnes = '';
+    document.querySelectorAll('.person-container').forEach((personField, index) => {
+        const nom = personField.querySelector('.nomPersonne').value;
+        const role = personField.querySelector('.rolePersonne').value;
+        const id = personField.querySelector('.idPersonne').value;
+        const typeObjet = personField.querySelector('.typeObjet').value;
+        const numeroObjet = personField.querySelector('.numeroObjet').value;
+        personnes += `\nPersonne ${index + 1} :\n- Nom : ${nom}\n- Rôle : ${role}\n- Numéro ID : ${id}\n   Objet impliqué:\n   - Type : ${typeObjet}\n   - Numéro : ${numeroObjet}`;
+    });
+
+    const message = `**Nouveau rapport créé par : ${agent}**\n**Numéro de rapport :** ${reportID}\n**Type d'incident :** ${typeIncident}\n**Date :** ${dateIncident}\n**Description :** ${description}\n**Personnes concernées :**${personnes}`;
+
+    fetch(webhookRapport, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ content: message })
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Le rapport a été envoyé avec succès !");
+            reportsEffectues++;
+            reportCount++; // Incrémente le compteur de rapport
+            document.getElementById('reportForm').reset();
+            document.getElementById('reportID').textContent = genererIDRapport();
+            document.getElementById("nombrePersonnes").selectedIndex = 0;
+            document.getElementById('alertBox').textContent = `Rapport envoyé par ${agent}`;
+            document.getElementById('alertBox').style.display = 'block';
+        } else {
+            alert("Erreur lors de l'envoi du rapport.");
+        }
+    })
+    .catch(error => {
+        console.error('Erreur lors de l\'envoi du webhook:', error);
+        alert("Erreur lors de l'envoi du rapport.");
+    });
+}
