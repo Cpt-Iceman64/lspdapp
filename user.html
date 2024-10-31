@@ -3,174 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de bord de l'agent</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #2c2f33;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .dashboard {
-            width: 80%;
-            max-width: 600px;
-            background: #23272a;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            text-align: center;
-        }
-        .header h1 {
-            color: #ffffff;
-            font-size: 1.8em;
-            margin: 10px 0;
-        }
-        #avatar {
-            border-radius: 50%;
-            margin-top: 15px;
-            width: 100px;
-            height: 100px;
-            border: 3px solid #7289da;
-        }
-        .status-section {
-            margin-top: 20px;
-        }
-        .status-buttons button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            margin: 10px 5px;
-            color: #ffffff;
-        }
-        .service-button {
-            background-color: #4CAF50;
-        }
-        .end-service-button {
-            background-color: #f44336;
-        }
-        .section-link {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 20px;
-            background-color: #7289da;
-            color: white;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .error-message {
-            color: #f44336;
-            margin-top: 15px;
-            font-weight: bold;
-        }
-    </style>
-    <script>
-        // Récupère le token d'accès depuis le stockage local
-        const accessToken = localStorage.getItem('discord_token');
-
-        if (accessToken) {
-            fetch('https://discord.com/api/users/@me', {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })
-            .then(response => response.json())
-            .then(user => {
-                document.getElementById('username').textContent = user.username;
-                document.getElementById('avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
-            })
-            .catch(error => {
-                console.error('Erreur lors de la récupération des infos utilisateur:', error);
-            });
-        } else {
-            window.location.href = '/lspdapp/';
-        }
-
-        // Fonction générique pour envoyer un message au webhook Discord
-        function envoyerWebhook(message) {
-            fetch('https://discord.com/api/webhooks/1301524280529518602/GrQETveJvGKN4CgX-BNQuqafwTP6j2e_IaaexX3tbrG6iGobixweOc_OrTg6CwTKwNMP', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ content: message })
-            }).catch(error => console.error('Erreur lors de l\'envoi du webhook:', error));
-        }
-
-        // Fonction pour gérer la prise de service
-        function prendreService() {
-            localStorage.setItem('enService', 'true');
-            document.getElementById('serviceStatus').textContent = 'En service';
-            document.getElementById('serviceStatus').style.color = 'green';
-            const username = document.getElementById('username').textContent;
-            envoyerWebhook(`Agent ${username} a pris son service.`);
-        }
-
-        // Fonction pour gérer la fin de service
-        function finirService() {
-            localStorage.setItem('enService', 'false');
-            document.getElementById('serviceStatus').textContent = 'Hors service';
-            document.getElementById('serviceStatus').style.color = 'red';
-            const username = document.getElementById('username').textContent;
-            envoyerWebhook(`Agent ${username} a terminé son service.`);
-        }
-
-        // Vérifie l'état du service lors du chargement de la page
-        window.onload = function() {
-            const enService = localStorage.getItem('enService') === 'true';
-            if (enService) {
-                document.getElementById('serviceStatus').textContent = 'En service';
-                document.getElementById('serviceStatus').style.color = 'green';
-            } else {
-                document.getElementById('serviceStatus').textContent = 'Hors service';
-                document.getElementById('serviceStatus').style.color = 'red';
-            }
-        };
-
-        // Fonction pour vérifier l'état de service avant de créer un rapport
-        function verifierEtatService(event) {
-            const enService = localStorage.getItem('enService') === 'true';
-            if (!enService) {
-                event.preventDefault(); // Empêche la navigation
-                const errorMessage = document.getElementById('errorMessage');
-                errorMessage.textContent = "Vous devez être en service pour créer un rapport.";
-            }
-        }
-    </script>
+    <title>Dashboard - LSPD Application</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="dashboard">
-        <!-- En-tête utilisateur avec avatar et nom -->
-        <div class="header">
-            <h1>Bienvenue, <span id="username">...</span> !</h1>
-            <img id="avatar" src="" alt="Avatar">
+    <header class="header">
+        <div class="logo">
+            <img src="logo.png" alt="LSPD Logo">
         </div>
+        <h1>Tableau de bord de l'utilisateur</h1>
+    </header>
 
-        <!-- Section pour prendre et finir le service -->
-        <div class="status-section">
-            <p id="serviceStatus">...</p>
-            <div class="status-buttons">
-                <button class="service-button" onclick="prendreService()">Prendre le service</button>
-                <button class="end-service-button" onclick="finirService()">Fin du service</button>
-            </div>
-        </div>
+    <main class="content">
+        <!-- Menu de navigation -->
+        <nav class="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="user.html">Accueil</a></li>
+                <li><a href="create-report.html">Créer un Rapport</a></li>
+                <li><a href="database.html">Base de Données</a></li>
+                <li><button onclick="prendreService()">Prendre Service</button></li>
+                <li><button onclick="finirService()">Fin de Service</button></li>
+            </ul>
+        </nav>
 
-        <!-- Message d'erreur si l'utilisateur n'est pas en service -->
-        <p id="errorMessage" class="error-message"></p>
+        <!-- Section principale -->
+        <section class="main-content">
+            <h2>Bienvenue, [Nom de l'utilisateur] !</h2>
+            <p>Utilisez le menu pour naviguer dans l'application.</p>
+        </section>
+    </main>
 
-        <!-- Liens vers les actions principales -->
-        <div class="actions-section">
-            <a href="alerts.html" class="section-link">Voir les alertes en cours</a>
-            <a href="create-report.html" class="section-link" onclick="verifierEtatService(event)">Créer un rapport</a>
-            <a href="database.html" class="section-link">Accéder à la base de données</a>
-            <a href="reports.html" class="section-link">Voir les rapports existants</a>
-        </div>
-    </div>
+    <footer class="footer">
+        <p>LSPD - Tous droits réservés © 2024</p>
+    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
