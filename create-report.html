@@ -63,8 +63,9 @@
         button:hover {
             background-color: #5a6fa7;
         }
-        .conditional-field {
+        .conditional-field, .person-field, .object-field {
             display: none;
+            margin-top: 10px;
         }
         .error-message {
             color: #f44336;
@@ -74,40 +75,47 @@
     <script>
         const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
 
-        function afficherChampsConditionnels() {
-            const typeIncident = document.getElementById('typeIncident').value;
-            document.getElementById('serialField').style.display = (typeIncident === 'Tirs' || typeIncident === 'Agression avec arme') ? 'block' : 'none';
-            document.getElementById('plaqueField').style.display = (typeIncident === 'Vol de véhicule' || typeIncident === 'Accident de la route') ? 'block' : 'none';
-            document.getElementById('idField').style.display = (typeIncident !== '') ? 'block' : 'none';
+        // Affichage dynamique des champs pour personnes et objets
+        function ajouterPersonne() {
+            const personnesContainer = document.getElementById('personnesContainer');
+            const personneTemplate = document.getElementById('personTemplate').cloneNode(true);
+            personneTemplate.style.display = 'block';
+            personnesContainer.appendChild(personneTemplate);
         }
 
-        function verifierCohérence() {
-            const nomCitoyen = document.getElementById('citoyen').value;
-            const numeroID = document.getElementById('numeroID').value;
-            
-            if (nomCitoyen === "John Doe" && numeroID !== "123456789") {
-                document.getElementById('errorMessage').textContent = "Attention : possible usurpation d'identité pour " + nomCitoyen + ".";
-            } else {
-                document.getElementById('errorMessage').textContent = ""; 
-            }
+        function ajouterObjet() {
+            const objetsContainer = document.getElementById('objetsContainer');
+            const objetTemplate = document.getElementById('objectTemplate').cloneNode(true);
+            objetTemplate.style.display = 'block';
+            objetsContainer.appendChild(objetTemplate);
         }
 
+        // Fonction pour envoyer le rapport au webhook Discord
         function envoyerRapport(event) {
             event.preventDefault();
 
             const titre = document.getElementById('titre').value;
-            const citoyen = document.getElementById('citoyen').value;
+            const agent = document.getElementById('agent').value;
             const typeIncident = document.getElementById('typeIncident').value;
             const dateIncident = document.getElementById('dateIncident').value;
             const description = document.getElementById('description').value;
-            const serialNumber = document.getElementById('serialNumber').value;
-            const plaque = document.getElementById('plaque').value;
-            const numeroID = document.getElementById('numeroID').value;
 
-            const message = `**Nouveau rapport créé :**\n**Titre :** ${titre}\n**Citoyen concerné :** ${citoyen}\n**Type d'incident :** ${typeIncident}\n**Date :** ${dateIncident}\n**Description :** ${description}` +
-                (serialNumber ? `\n**Numéro de série de l'arme :** ${serialNumber}` : '') +
-                (plaque ? `\n**Plaque d'immatriculation :** ${plaque}` : '') +
-                (numeroID ? `\n**Numéro de carte d'identité :** ${numeroID}` : '');
+            let personnes = '';
+            document.querySelectorAll('.person-field').forEach((personField, index) => {
+                const nom = personField.querySelector('.nomPersonne').value;
+                const role = personField.querySelector('.rolePersonne').value;
+                const id = personField.querySelector('.idPersonne').value;
+                personnes += `\nPersonne ${index + 1} :\n- Nom : ${nom}\n- Rôle : ${role}\n- Numéro ID : ${id}`;
+            });
+
+            let objets = '';
+            document.querySelectorAll('.object-field').forEach((objectField, index) => {
+                const type = objectField.querySelector('.typeObjet').value;
+                const numero = objectField.querySelector('.numeroObjet').value;
+                objets += `\nObjet ${index + 1} :\n- Type : ${type}\n- Numéro : ${numero}`;
+            });
+
+            const message = `**Nouveau rapport créé par : ${agent}**\n**Titre :** ${titre}\n**Type d'incident :** ${typeIncident}\n**Date :** ${dateIncident}\n**Description :** ${description}\n**Personnes concernées :**${personnes}\n**Objets liés :**${objets}`;
 
             fetch(webhookRapport, {
                 method: 'POST',
@@ -120,7 +128,6 @@
                 if (response.ok) {
                     alert("Le rapport a été envoyé avec succès !");
                     document.getElementById('reportForm').reset();
-                    afficherChampsConditionnels();
                 } else {
                     alert("Erreur lors de l'envoi du rapport.");
                 }
@@ -132,8 +139,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('typeIncident').addEventListener('change', afficherChampsConditionnels);
-            document.getElementById('numeroID').addEventListener('blur', verifierCohérence);
+            document.getElementById('ajouterPersonne').addEventListener('click', ajouterPersonne);
+            document.getElementById('ajouterObjet').addEventListener('click', ajouterObjet);
             document.getElementById('reportForm').addEventListener('submit', envoyerRapport);
         });
     </script>
@@ -142,36 +149,20 @@
     <div class="report-form">
         <h1>Création de Rapport</h1>
         <form id="reportForm">
+            <label for="agent">Nom de l'agent :</label>
+            <input type="text" id="agent" name="agent" required>
+
             <label for="titre">Titre du rapport :</label>
             <input type="text" id="titre" name="titre" required>
-
-            <label for="citoyen">Nom du citoyen concerné :</label>
-            <input type="text" id="citoyen" name="citoyen" required>
 
             <label for="typeIncident">Type d'incident :</label>
             <select id="typeIncident" name="typeIncident" required>
                 <option value="" disabled selected>Sélectionnez le type d'incident</option>
                 <option value="Tirs">Tirs</option>
-                <option value="Agression avec arme">Agression avec arme</option>
-                <option value="Vol de véhicule">Vol de véhicule</option>
-                <option value="Accident de la route">Accident de la route</option>
+                <option value="Agression">Agression</option>
+                <option value="Vol">Vol</option>
                 <option value="Autre">Autre</option>
             </select>
-
-            <div id="serialField" class="conditional-field">
-                <label for="serialNumber">Numéro de série de l'arme :</label>
-                <input type="text" id="serialNumber" name="serialNumber">
-            </div>
-
-            <div id="plaqueField" class="conditional-field">
-                <label for="plaque">Plaque d'immatriculation :</label>
-                <input type="text" id="plaque" name="plaque">
-            </div>
-
-            <div id="idField" class="conditional-field">
-                <label for="numeroID">Numéro de carte d'identité :</label>
-                <input type="text" id="numeroID" name="numeroID">
-            </div>
 
             <label for="dateIncident">Date de l'incident :</label>
             <input type="date" id="dateIncident" name="dateIncident" required>
@@ -179,9 +170,33 @@
             <label for="description">Description :</label>
             <textarea id="description" name="description" required></textarea>
 
+            <h2>Personnes concernées</h2>
+            <div id="personnesContainer"></div>
+            <button type="button" id="ajouterPersonne">Ajouter une personne</button>
+
+            <h2>Objets impliqués</h2>
+            <div id="objetsContainer"></div>
+            <button type="button" id="ajouterObjet">Ajouter un objet</button>
+
             <button type="submit">Envoyer le rapport</button>
-            <p id="errorMessage" class="error-message"></p>
         </form>
+
+        <!-- Template caché pour les personnes et objets -->
+        <div id="personTemplate" class="person-field" style="display: none;">
+            <label>Nom :</label>
+            <input type="text" class="nomPersonne">
+            <label>Rôle (suspect, victime) :</label>
+            <input type="text" class="rolePersonne">
+            <label>Numéro ID :</label>
+            <input type="text" class="idPersonne">
+        </div>
+
+        <div id="objectTemplate" class="object-field" style="display: none;">
+            <label>Type d'objet (arme, véhicule) :</label>
+            <input type="text" class="typeObjet">
+            <label>Numéro de l'objet :</label>
+            <input type="text" class="numeroObjet">
+        </div>
     </div>
 </body>
 </html>
