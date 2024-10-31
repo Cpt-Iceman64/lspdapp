@@ -68,21 +68,31 @@
         // URL du webhook pour les rapports
         const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
 
+        // Vérification de l'état de service
+        window.onload = function() {
+            const enService = localStorage.getItem('enService') === 'true';
+            if (!enService) {
+                alert("Vous devez être en service pour créer un rapport.");
+                window.location.href = 'user.html'; // Redirige vers la page user.html pour prendre le service
+            }
+        };
+
         function envoyerRapport() {
             // Récupère les valeurs du formulaire
             const titre = document.getElementById('titre').value;
+            const citoyen = document.getElementById('citoyen').value;
             const typeIncident = document.getElementById('typeIncident').value;
             const dateIncident = document.getElementById('dateIncident').value;
             const description = document.getElementById('description').value;
 
             // Vérifie que les champs obligatoires sont remplis
-            if (!titre || !typeIncident || !dateIncident || !description) {
+            if (!titre || !citoyen || !typeIncident || !dateIncident || !description) {
                 alert("Veuillez remplir tous les champs.");
                 return;
             }
 
             // Crée le message pour le webhook
-            const message = `**Nouveau rapport créé :**\n**Titre :** ${titre}\n**Type d'incident :** ${typeIncident}\n**Date :** ${dateIncident}\n**Description :** ${description}`;
+            const message = `**Nouveau rapport créé :**\n**Titre :** ${titre}\n**Citoyen concerné :** ${citoyen}\n**Type d'incident :** ${typeIncident}\n**Date :** ${dateIncident}\n**Description :** ${description}`;
 
             // Envoie le message au webhook Discord
             fetch(webhookRapport, {
@@ -115,6 +125,9 @@
             <label for="titre">Titre du rapport :</label>
             <input type="text" id="titre" name="titre" required>
 
+            <label for="citoyen">Nom du citoyen concerné :</label>
+            <input type="text" id="citoyen" name="citoyen" required>
+
             <label for="typeIncident">Type d'incident :</label>
             <select id="typeIncident" name="typeIncident" required>
                 <option value="" disabled selected>Sélectionnez le type d'incident</option>
@@ -135,4 +148,3 @@
     </div>
 </body>
 </html>
-
