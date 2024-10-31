@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Création de Rapport</title>
+    <title>Tableau de bord de l'agent</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,136 +15,144 @@
             height: 100vh;
             margin: 0;
         }
-        .report-form {
+        .dashboard {
             width: 80%;
             max-width: 600px;
             background: #23272a;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-        h1 {
             text-align: center;
+        }
+        .header h1 {
             color: #ffffff;
             font-size: 1.8em;
+            margin: 10px 0;
         }
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-            color: #7289da;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: none;
-            background-color: #2f3136;
-            color: #ffffff;
-            font-size: 1em;
-        }
-        textarea {
-            resize: vertical;
+        #avatar {
+            border-radius: 50%;
+            margin-top: 15px;
+            width: 100px;
             height: 100px;
+            border: 3px solid #7289da;
         }
-        button {
-            display: block;
-            width: 100%;
-            padding: 10px;
+        .status-section {
             margin-top: 20px;
-            font-size: 1em;
-            color: #ffffff;
-            background-color: #7289da;
+        }
+        .status-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
+            margin: 10px 5px;
+            color: #ffffff;
         }
-        button:hover {
-            background-color: #5a6fa7;
+        .service-button {
+            background-color: #4CAF50;
+        }
+        .end-service-button {
+            background-color: #f44336;
+        }
+        .section-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #7289da;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
         }
     </style>
     <script>
-        // URL du webhook pour les rapports
-        const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
+        // Récupère le token d'accès depuis le stockage local
+        const accessToken = localStorage.getItem('discord_token');
 
-        // Vérification de l'état de service
-        window.onload = function() {
-            const enService = localStorage.getItem('enService') === 'true';
-            if (!enService) {
-                alert("Vous devez être en service pour créer un rapport.");
-                window.location.href = 'user.html'; // Redirige vers la page user.html pour prendre le service
-            }
-        };
+        if (accessToken) {
+            fetch('https://discord.com/api/users/@me', {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+            .then(response => response.json())
+            .then(user => {
+                document.getElementById('username').textContent = user.username;
+                document.getElementById('avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des infos utilisateur:', error);
+            });
+        } else {
+            window.location.href = '/lspdapp/';
+        }
 
-        function envoyerRapport() {
-            // Récupère les valeurs du formulaire
-            const titre = document.getElementById('titre').value;
-            const citoyen = document.getElementById('citoyen').value;
-            const typeIncident = document.getElementById('typeIncident').value;
-            const dateIncident = document.getElementById('dateIncident').value;
-            const description = document.getElementById('description').value;
-
-            // Vérifie que les champs obligatoires sont remplis
-            if (!titre || !citoyen || !typeIncident || !dateIncident || !description) {
-                alert("Veuillez remplir tous les champs.");
-                return;
-            }
-
-            // Crée le message pour le webhook
-            const message = `**Nouveau rapport créé :**\n**Titre :** ${titre}\n**Citoyen concerné :** ${citoyen}\n**Type d'incident :** ${typeIncident}\n**Date :** ${dateIncident}\n**Description :** ${description}`;
-
-            // Envoie le message au webhook Discord
-            fetch(webhookRapport, {
+        // Fonction générique pour envoyer un message au webhook Discord
+        function envoyerWebhook(message) {
+            fetch('https://discord.com/api/webhooks/1301524280529518602/GrQETveJvGKN4CgX-BNQuqafwTP6j2e_IaaexX3tbrG6iGobixweOc_OrTg6CwTKwNMP', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ content: message })
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert("Le rapport a été envoyé avec succès !");
-                    // Réinitialise le formulaire
-                    document.getElementById('reportForm').reset();
-                } else {
-                    alert("Erreur lors de l'envoi du rapport.");
-                }
-            })
-            .catch(error => {
-                console.error('Erreur lors de l\'envoi du webhook:', error);
-                alert("Erreur lors de l'envoi du rapport.");
-            });
+            }).catch(error => console.error('Erreur lors de l\'envoi du webhook:', error));
         }
+
+        // Fonction pour gérer la prise de service
+        function prendreService() {
+            localStorage.setItem('enService', 'true');
+            document.getElementById('serviceStatus').textContent = 'En service';
+            document.getElementById('serviceStatus').style.color = 'green';
+            const username = document.getElementById('username').textContent;
+            envoyerWebhook(`Agent ${username} a pris son service.`);
+        }
+
+        // Fonction pour gérer la fin de service
+        function finirService() {
+            localStorage.setItem('enService', 'false');
+            document.getElementById('serviceStatus').textContent = 'Hors service';
+            document.getElementById('serviceStatus').style.color = 'red';
+            const username = document.getElementById('username').textContent;
+            envoyerWebhook(`Agent ${username} a terminé son service.`);
+        }
+
+        // Vérifie l'état du service lors du chargement de la page
+        window.onload = function() {
+            const enService = localStorage.getItem('enService') === 'true';
+            if (enService) {
+                document.getElementById('serviceStatus').textContent = 'En service';
+                document.getElementById('serviceStatus').style.color = 'green';
+            } else {
+                document.getElementById('serviceStatus').textContent = 'Hors service';
+                document.getElementById('serviceStatus').style.color = 'red';
+            }
+        };
     </script>
 </head>
 <body>
-    <div class="report-form">
-        <h1>Création de Rapport</h1>
-        <form id="reportForm" onsubmit="event.preventDefault(); envoyerRapport();">
-            <label for="titre">Titre du rapport :</label>
-            <input type="text" id="titre" name="titre" required>
+    <div class="dashboard">
+        <!-- En-tête utilisateur avec avatar et nom -->
+        <div class="header">
+            <h1>Bienvenue, <span id="username">...</span> !</h1>
+            <img id="avatar" src="" alt="Avatar">
+        </div>
 
-            <label for="citoyen">Nom du citoyen concerné :</label>
-            <input type="text" id="citoyen" name="citoyen" required>
+        <!-- Section pour prendre et finir le service -->
+        <div class="status-section">
+            <p id="serviceStatus">...</p>
+            <div class="status-buttons">
+                <button class="service-button" onclick="prendreService()">Prendre le service</button>
+                <button class="end-service-button" onclick="finirService()">Fin du service</button>
+            </div>
+        </div>
 
-            <label for="typeIncident">Type d'incident :</label>
-            <select id="typeIncident" name="typeIncident" required>
-                <option value="" disabled selected>Sélectionnez le type d'incident</option>
-                <option value="Vol">Vol</option>
-                <option value="Agression">Agression</option>
-                <option value="Accident">Accident</option>
-                <option value="Autre">Autre</option>
-            </select>
-
-            <label for="dateIncident">Date de l'incident :</label>
-            <input type="date" id="dateIncident" name="dateIncident" required>
-
-            <label for="description">Description :</label>
-            <textarea id="description" name="description" required></textarea>
-
-            <button type="submit">Envoyer le rapport</button>
-        </form>
+        <!-- Liens vers les actions principales -->
+        <div class="actions-section">
+            <a href="alerts.html" class="section-link">Voir les alertes en cours</a>
+            <a href="create-report.html" class="section-link">Créer un rapport</a>
+            <a href="database.html" class="section-link">Accéder à la base de données</a>
+            <a href="reports.html" class="section-link">Voir les rapports existants</a>
+        </div>
     </div>
 </body>
 </html>
