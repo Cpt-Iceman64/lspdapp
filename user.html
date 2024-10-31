@@ -87,17 +87,33 @@
             window.location.href = '/lspdapp/';
         }
 
-        // Fonction pour gérer le service de l'agent
+        // Fonction générique pour envoyer un message au webhook Discord
+        function envoyerWebhook(message) {
+            fetch('https://discord.com/api/webhooks/1301524280529518602/GrQETveJvGKN4CgX-BNQuqafwTP6j2e_IaaexX3tbrG6iGobixweOc_OrTg6CwTKwNMP', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ content: message })
+            }).catch(error => console.error('Erreur lors de l\'envoi du webhook:', error));
+        }
+
+        // Fonction pour gérer la prise de service
         function prendreService() {
             localStorage.setItem('enService', 'true');
             document.getElementById('serviceStatus').textContent = 'En service';
             document.getElementById('serviceStatus').style.color = 'green';
+            const username = document.getElementById('username').textContent;
+            envoyerWebhook(`Agent ${username} a pris son service.`);
         }
 
+        // Fonction pour gérer la fin de service
         function finirService() {
             localStorage.setItem('enService', 'false');
             document.getElementById('serviceStatus').textContent = 'Hors service';
             document.getElementById('serviceStatus').style.color = 'red';
+            const username = document.getElementById('username').textContent;
+            envoyerWebhook(`Agent ${username} a terminé son service.`);
         }
 
         // Vérifie l'état du service lors du chargement de la page
@@ -110,37 +126,6 @@
                 document.getElementById('serviceStatus').textContent = 'Hors service';
                 document.getElementById('serviceStatus').style.color = 'red';
             }
-
-            function envoyerWebhook(message, webhookUrl) {
-    fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            content: message
-        })
-    }).catch(error => console.error('Erreur lors de l\'envoi du webhook:', error));
-}
-
-// Remplace ces URL par celles de tes webhooks Discord pour la prise et fin de service
-const webhookPriseService = 'https://discord.com/api/webhooks/1301524280529518602/GrQETveJvGKN4CgX-BNQuqafwTP6j2e_IaaexX3tbrG6iGobixweOc_OrTg6CwTKwNMP';
-const webhookFinService = 'https://discord.com/api/webhooks/1301524280529518602/GrQETveJvGKN4CgX-BNQuqafwTP6j2e_IaaexX3tbrG6iGobixweOc_OrTg6CwTKwNMP';
-
-function prendreService() {
-    localStorage.setItem('enService', 'true');
-    document.getElementById('serviceStatus').textContent = 'En service';
-    document.getElementById('serviceStatus').style.color = 'green';
-    envoyerWebhook(`Agent ${document.getElementById('username').textContent} a pris son service.`, webhookPriseService);
-}
-
-function finirService() {
-    localStorage.setItem('enService', 'false');
-    document.getElementById('serviceStatus').textContent = 'Hors service';
-    document.getElementById('serviceStatus').style.color = 'red';
-    envoyerWebhook(`Agent ${document.getElementById('username').textContent} a terminé son service.`, webhookFinService);
-}
-
         };
     </script>
 </head>
