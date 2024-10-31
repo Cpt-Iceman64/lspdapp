@@ -89,13 +89,25 @@
     <script>
         const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
 
-        let reportCount = 1;
-        function genererIDRapport() {
+        // Fonction pour charger ou initialiser le numéro de rapport à partir de localStorage
+        function obtenirNumeroRapport() {
+            let reportCount = localStorage.getItem('reportCount');
+            if (!reportCount) {
+                reportCount = 1;
+                localStorage.setItem('reportCount', reportCount);
+            }
             return `R${String(reportCount).padStart(3, '0')}`;
         }
 
+        // Fonction pour incrémenter et sauvegarder le numéro de rapport dans localStorage
+        function incrementerNumeroRapport() {
+            let reportCount = parseInt(localStorage.getItem('reportCount')) || 1;
+            reportCount++;
+            localStorage.setItem('reportCount', reportCount);
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('reportID').textContent = genererIDRapport();
+            document.getElementById('reportID').textContent = obtenirNumeroRapport();
         });
 
         function ajouterPersonnes() {
@@ -164,9 +176,9 @@
             .then(response => {
                 if (response.ok) {
                     alert("Le rapport a été envoyé avec succès !");
-                    reportCount++; // Incrémente le compteur de rapport
+                    incrementerNumeroRapport(); // Incrémente le compteur de rapport
                     document.getElementById('reportForm').reset();
-                    document.getElementById('reportID').textContent = genererIDRapport();
+                    document.getElementById('reportID').textContent = obtenirNumeroRapport(); // Met à jour le numéro de rapport affiché
                 } else {
                     alert("Erreur lors de l'envoi du rapport.");
                 }
