@@ -64,6 +64,11 @@
             text-decoration: none;
             font-weight: bold;
         }
+        .error-message {
+            color: #f44336;
+            margin-top: 15px;
+            font-weight: bold;
+        }
     </style>
     <script>
         // Récupère le token d'accès depuis le stockage local
@@ -127,6 +132,16 @@
                 document.getElementById('serviceStatus').style.color = 'red';
             }
         };
+
+        // Fonction pour vérifier l'état de service avant de créer un rapport
+        function verifierEtatService(event) {
+            const enService = localStorage.getItem('enService') === 'true';
+            if (!enService) {
+                event.preventDefault(); // Empêche la navigation
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.textContent = "Vous devez être en service pour créer un rapport.";
+            }
+        }
     </script>
 </head>
 <body>
@@ -146,10 +161,13 @@
             </div>
         </div>
 
+        <!-- Message d'erreur si l'utilisateur n'est pas en service -->
+        <p id="errorMessage" class="error-message"></p>
+
         <!-- Liens vers les actions principales -->
         <div class="actions-section">
             <a href="alerts.html" class="section-link">Voir les alertes en cours</a>
-            <a href="https://cpt-iceman64.github.io/lspdapp/create-report.html" class="section-link">Créer un rapport</a>
+            <a href="create-report.html" class="section-link" onclick="verifierEtatService(event)">Créer un rapport</a>
             <a href="database.html" class="section-link">Accéder à la base de données</a>
             <a href="reports.html" class="section-link">Voir les rapports existants</a>
         </div>
