@@ -206,4 +206,44 @@
                 const role = personField.querySelector('.rolePersonne').value;
                 const id = personField.querySelector('.idPersonne').value;
                 const typeObjet = personField.querySelector('.typeObjet').value;
-                const numeroObjet = personField.querySe
+                const numeroObjet = personField.querySelector('.numeroObjet').value;
+                personnes += `\nPersonne ${index + 1} :\n- Nom : ${nom}\n- Rôle : ${role}\n- Numéro ID : ${id}\n   Objet impliqué:\n   - Type : ${typeObjet}\n   - Numéro : ${numeroObjet}`;
+            });
+
+            const message = `**Nouveau rapport créé par : ${agent}**\n**Numéro de rapport :** ${reportID}\n**Type d'incident :** ${typeIncident}\n**Date :** ${dateIncident}\n**Description :** ${description}\n**Personnes concernées :**${personnes}`;
+
+            fetch(webhookRapport, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ content: message })
+            })
+            .then(response => {
+                if (response.ok) {
+                    displayAlert("Le rapport a été envoyé avec succès !");
+                    reportCount++;
+                    document.getElementById('reportForm').reset();
+                    document.getElementById('reportID').textContent = genererIDRapport();
+                } else {
+                    displayAlert("Erreur lors de l'envoi du rapport.", true);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de l\'envoi du webhook:', error);
+                displayAlert("Erreur lors de l'envoi du rapport.", true);
+            });
+        }
+
+        function displayAlert(message, isError = false) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.style.backgroundColor = isError ? '#f44336' : '#4caf50';
+            alertBox.style.display = 'block';
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
