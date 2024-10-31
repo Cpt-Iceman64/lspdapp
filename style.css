@@ -36,11 +36,20 @@ h1 {
     margin-bottom: 20px;
 }
 
-.section h2 {
-    font-size: 1.5em;
-    color: #ffffff;
-    border-bottom: 2px solid #b38e00; /* Soulignement doré */
-    padding-bottom: 10px;
+/* Conteneur de Bienvenue */
+.welcome-container {
+    background-color: #ffffff; /* Fond blanc */
+    color: #001b44; /* Texte bleu foncé pour le contraste */
+    padding: 20px;
+    border: 2px solid #b38e00; /* Bordure dorée */
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.welcome-container h2 {
+    color: #001b44; /* Titre en bleu foncé pour contraste */
+    margin-bottom: 10px;
 }
 
 /* Formulaires */
@@ -56,8 +65,8 @@ input[type="text"], input[type="number"], select {
     padding: 10px;
     margin-top: 5px;
     margin-bottom: 15px;
-    border: none;
     border-radius: 5px;
+    border: 2px solid #b38e00; /* Bordure dorée pour champ */
     background-color: #ffffff;
     color: #001b44;
     font-size: 1em;
