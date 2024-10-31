@@ -32,7 +32,6 @@ body {
     letter-spacing: 1px;
 }
 
-/* Styles de base pour l'indicateur de service */
 .status-indicator {
     padding: 10px 20px;
     border-radius: 8px;
@@ -41,7 +40,8 @@ body {
     text-align: center;
     font-size: 1em;
     width: 150px;
-    margin: 0 auto;
+    margin: 20px auto;
+    animation: clignote 1s infinite;
 }
 
 /* Animation clignotante */
@@ -51,16 +51,21 @@ body {
     100% { opacity: 1; }
 }
 
-/* Styles pour le mode "Hors service" */
-.hors-service {
-    background-color: #f44336; /* Rouge */
-    animation: clignote 1s infinite;
+/* Animation clignotante */
+@keyframes clignote {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
 }
 
-/* Styles pour le mode "En service" */
+/* Hors service - Rouge */
+.hors-service {
+    background-color: #f44336;
+}
+
+/* En service - Vert */
 .en-service {
-    background-color: #4CAF50; /* Vert */
-    animation: clignote 1s infinite;
+    background-color: #4CAF50;
 }
 /* Conteneur principal pour Desktop */
 .container {
@@ -68,7 +73,21 @@ body {
     padding: 20px;
     gap: 20px;
 }
+/* Styles pour les boutons */
+.controls button {
+    padding: 10px 20px;
+    font-size: 1em;
+    margin: 5px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+    background-color: #7289da;
+}
 
+.controls button:hover {
+    background-color: #5a6fa7;
+}
 /* Sidebar */
 .sidebar {
     width: 25%;
