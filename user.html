@@ -16,13 +16,17 @@
 
     <!-- Contenu principal divisé en deux colonnes -->
     <div class="container">
-        <!-- Barre latérale gauche pour les boutons -->
+        <!-- Barre latérale gauche pour les boutons et le récap de l'agent -->
         <aside class="sidebar">
             <button onclick="prendreService()">Prendre le service</button>
             <button onclick="finirService()">Fin de service</button>
             <button onclick="window.location.href='create-report.html'">Créer un rapport</button>
-            <button onclick="window.location.href='alerts.html'">Voir les alertes</button>
-            <button onclick="window.location.href='database.html'">Base de données</button>
+            <div class="agent-summary">
+                <h3>Récap de l'agent</h3>
+                <p><strong>État :</strong> <span id="agent-status">Hors service</span></p>
+                <p><strong>Durée en service :</strong> <span id="service-duration">00:00:00</span></p>
+                <p><strong>Rapports effectués :</strong> <span id="report-count">0</span></p>
+            </div>
         </aside>
 
         <!-- Section principale pour le contenu central -->
@@ -44,21 +48,40 @@
 
     <!-- Script pour gérer les interactions et récupérer les données utilisateur -->
     <script>
-        // Fonction pour gérer l'état de service
         let enService = false;
+        let serviceStartTime = null;
+        let reportCount = 0;
 
         function prendreService() {
             enService = true;
+            serviceStartTime = new Date();
             document.getElementById("service-status").textContent = "En service";
             document.getElementById("service-status").classList.add("service-on");
             document.getElementById("service-status").classList.remove("service-off");
+            document.getElementById("agent-status").textContent = "En service";
+            updateServiceDuration();
         }
 
         function finirService() {
             enService = false;
+            serviceStartTime = null;
             document.getElementById("service-status").textContent = "Hors service";
             document.getElementById("service-status").classList.add("service-off");
             document.getElementById("service-status").classList.remove("service-on");
+            document.getElementById("agent-status").textContent = "Hors service";
+            document.getElementById("service-duration").textContent = "00:00:00";
+        }
+
+        function updateServiceDuration() {
+            if (enService && serviceStartTime) {
+                const now = new Date();
+                const duration = new Date(now - serviceStartTime);
+                const hours = String(duration.getUTCHours()).padStart(2, '0');
+                const minutes = String(duration.getUTCMinutes()).padStart(2, '0');
+                const seconds = String(duration.getUTCSeconds()).padStart(2, '0');
+                document.getElementById("service-duration").textContent = `${hours}:${minutes}:${seconds}`;
+                setTimeout(updateServiceDuration, 1000);
+            }
         }
     </script>
 </body>
