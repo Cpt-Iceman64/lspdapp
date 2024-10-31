@@ -10,59 +10,62 @@ body {
     min-height: 100vh;
 }
 
+/* Header */
 .header {
     background-color: #2b2d3c;
-    padding: 20px;
+    padding: 15px;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .header .logo {
-    width: 80px;
-    margin-bottom: 10px;
+    width: 50px;
 }
 
 .header h1 {
     color: #00aaff;
-    margin: 0;
+    font-size: 2em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
+/* Indicateur de statut */
 .status-indicator {
     margin-top: 10px;
-    padding: 5px 10px;
+    padding: 10px 20px;
     border-radius: 8px;
     font-weight: bold;
     color: #ffffff;
-}
-
-.service-on {
-    background-color: #4CAF50; /* Vert pour "En service" */
-}
-
-.service-off {
-    background-color: #f44336; /* Rouge pour "Hors service" */
+    text-align: center;
+    font-size: 1em;
+    background-color: #f44336; /* Rouge pour hors service */
+    border: none;
 }
 
 /* Conteneur principal avec sidebar et contenu central */
 .container {
     display: flex;
-    flex: 1;
+    padding: 20px;
+    gap: 20px;
 }
 
+/* Sidebar */
 .sidebar {
-    width: 30%;
+    width: 25%;
     background-color: #2e303d;
     padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .sidebar button {
-    padding: 10px;
+    padding: 12px;
     font-size: 1em;
     color: #ffffff;
     background-color: #7289da;
@@ -70,41 +73,80 @@ body {
     border-radius: 5px;
     cursor: pointer;
     text-align: left;
+    transition: background-color 0.3s ease, transform 0.2s;
+    width: 100%;
 }
 
 .sidebar button:hover {
     background-color: #5a6fa7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Agent summary */
+.agent-summary {
+    background-color: #3a3d4d;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 1em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.agent-summary h3 {
+    color: #00aaff;
+    font-size: 1.2em;
+}
+
+.agent-summary p {
+    margin: 5px 0;
+}
+
+/* Main content */
 .main-content {
-    width: 70%;
+    width: 75%;
     padding: 20px;
+    background-color: #2e303d;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
+/* Conteneur de bienvenue */
 .welcome-container {
-    background: #2e303d;
+    background: #3a3d4d;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    margin-bottom: 20px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .welcome-container h2 {
     color: #00aaff;
+    font-size: 1.6em;
 }
 
+/* Alertes */
 .alert-box {
     background-color: #3a3d4d;
     padding: 15px;
     margin-top: 10px;
     border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 100%;
 }
 
-/* Pied de page */
+/* Footer */
 .footer {
     background-color: #2b2d3c;
     text-align: center;
-    padding: 10px;
+    padding: 15px;
     font-size: 0.9em;
     color: #999;
+    margin-top: auto;
 }
