@@ -99,16 +99,19 @@
             border-radius: 8px;
             margin-top: 15px;
             text-align: left;
+            position: relative;
         }
 
         .delete-button {
             background-color: #ff4d4d;
-            color: #ffffff;
+            color: white;
             border: none;
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
-            float: right;
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
 
         .delete-button:hover {
@@ -136,6 +139,44 @@
             obtenirNumeroRapport();
         });
 
+        // Fonction pour ajouter des champs pour chaque personne impliquée
+        function ajouterPersonnes() {
+            const personnesContainer = document.getElementById('personnesContainer');
+            personnesContainer.innerHTML = '';  // Réinitialise le conteneur
+
+            const nombrePersonnes = parseInt(document.getElementById('nombrePersonnes').value);
+            for (let i = 0; i < nombrePersonnes; i++) {
+                const personneDiv = document.createElement('div');
+                personneDiv.classList.add('person-container');
+                personneDiv.innerHTML = `
+                    <label>Nom de la personne ${i + 1} :</label>
+                    <input type="text" class="nomPersonne" placeholder="Nom complet" required>
+                    
+                    <label>Rôle (suspect, victime, etc.) :</label>
+                    <input type="text" class="rolePersonne" placeholder="Rôle de la personne" required>
+                    
+                    <label>Numéro ID :</label>
+                    <input type="text" class="idPersonne" placeholder="Numéro d'identité" required>
+                    
+                    <label>Type d'objet impliqué (arme, véhicule, etc.) :</label>
+                    <input type="text" class="typeObjet" placeholder="Type d'objet" required>
+                    
+                    <label>Numéro de l'objet :</label>
+                    <input type="text" class="numeroObjet" placeholder="Numéro de série ou d'immatriculation" required>
+
+                    <button type="button" class="delete-button" onclick="supprimerPersonne(this)">Supprimer cette personne</button>
+                `;
+                personnesContainer.appendChild(personneDiv);
+            }
+        }
+
+        // Fonction pour supprimer une personne
+        function supprimerPersonne(button) {
+            const personneDiv = button.parentElement;
+            personneDiv.remove();
+        }
+
+        // Fonction pour envoyer le rapport au webhook Discord
         function envoyerRapport(event) {
             event.preventDefault();
 
@@ -150,10 +191,12 @@
                 const nom = personField.querySelector('.nomPersonne').value;
                 const role = personField.querySelector('.rolePersonne').value;
                 const id = personField.querySelector('.idPersonne').value;
-                personnes += `\nPersonne ${index + 1} : Nom : ${nom}, Rôle : ${role}, ID : ${id}`;
+                const typeObjet = personField.querySelector('.typeObjet').value;
+                const numeroObjet = personField.querySelector('.numeroObjet').value;
+                personnes += `\nPersonne ${index + 1} :\n- Nom : ${nom}\n- Rôle : ${role}\n- Numéro ID : ${id}\n   Objet impliqué:\n   - Type : ${typeObjet}\n   - Numéro : ${numeroObjet}`;
             });
 
-            const message = `**Rapport de : ${agent}**\n**Numéro de rapport :** ${reportID}\n**Type :** ${typeIncident}\n**Date :** ${dateIncident}\n**Description :** ${description}\n**Personnes impliquées :**${personnes}`;
+            const message = `**Nouveau rapport créé par : ${agent}**\n**Numéro de rapport :** ${reportID}\n**Type d'incident :** ${typeIncident}\n**Date :** ${dateIncident}\n**Description :** ${description}\n**Personnes concernées :**${personnes}`;
 
             fetch(webhookRapport, {
                 method: 'POST',
@@ -162,16 +205,16 @@
             })
             .then(response => {
                 if (response.ok) {
-                    alert("Rapport envoyé !");
+                    alert("Le rapport a été envoyé avec succès !");
                     document.getElementById('reportForm').reset();
                     obtenirNumeroRapport();
                 } else {
-                    alert("Erreur lors de l'envoi.");
+                    alert("Erreur lors de l'envoi du rapport.");
                 }
             })
             .catch(error => {
-                console.error('Erreur:', error);
-                alert("Erreur lors de l'envoi.");
+                console.error('Erreur lors de l\'envoi du webhook:', error);
+                alert("Erreur lors de l'envoi du rapport.");
             });
         }
     </script>
