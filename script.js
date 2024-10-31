@@ -1,12 +1,12 @@
-// Configuration des Webhooks
+// Webhook pour Discord
 const webhookPriseFinService = 'https://discord.com/api/webhooks/1301524280529518602/GrQETveJvGKN4CgX-BNQuqafwTP6j2e_IaaexX3tbrG6iGobixweOc_OrTg6CwTKwNMP';
 let startTime;
-let isServiceOn = false; // Variable pour suivre l'état du service
+let isServiceOn = false; // Variable pour vérifier si l'agent est en service
 
-// Récupère le pseudo de l'utilisateur dans le serveur Discord
+// Fonction pour récupérer le pseudo de l'utilisateur dans le serveur Discord
 async function obtenirPseudoServeur() {
     const accessToken = localStorage.getItem('discord_access_token');
-    const guildId = 'YOUR_GUILD_ID'; // Remplace par l'ID de ton serveur
+    const guildId = 'YOUR_GUILD_ID'; // Remplace par l'ID de ton serveur Discord
 
     if (accessToken) {
         try {
