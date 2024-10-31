@@ -1,6 +1,9 @@
-// URLs des Webhooks Discord
+// URL des Webhooks Discord
 const webhookPriseFinService = 'https://discord.com/api/webhooks/1301524280529518602/GrQETveJvGKN4CgX-BNQuqafwTP6j2e_IaaexX3tbrG6iGobixweOc_OrTg6CwTKwNMP';
 const webhookRapports = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
+
+// Nom de l'agent, à récupérer dynamiquement si possible (ex. depuis l'authentification Discord)
+let agentName = "Iceman64"; // Remplacez par le nom réel si disponible dynamiquement
 
 /**
  * Fonction pour envoyer un message au webhook Discord spécifique
@@ -33,8 +36,9 @@ function updateStatus(isInService) {
         prendreServiceBtn.classList.add('service-on');
         finServiceBtn.classList.remove('service-off');
         
-        // Envoi d'un message au webhook "Prise de service"
-        sendToDiscord(webhookPriseFinService, "🚓 Agent en service !");
+        // Message de prise de service avec le nom de l'agent
+        const message = `🚓 **${agentName} est en service !**`;
+        sendToDiscord(webhookPriseFinService, message);
     } else {
         // Hors service : texte rouge
         statusElement.textContent = "Hors service";
@@ -42,8 +46,9 @@ function updateStatus(isInService) {
         prendreServiceBtn.classList.remove('service-on');
         finServiceBtn.classList.add('service-off');
         
-        // Envoi d'un message au webhook "Fin de service"
-        sendToDiscord(webhookPriseFinService, "🚓 Agent hors service.");
+        // Message de fin de service avec le nom de l'agent
+        const message = `🚓 **${agentName} est hors service.**`;
+        sendToDiscord(webhookPriseFinService, message);
     }
 }
 
