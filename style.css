@@ -1,122 +1,76 @@
-/* Style de base */
+/* Utilisation de Bootstrap pour les bases, puis ajout de styles personnalisés */
+
 body {
+    background-color: #2c2f33;
+    color: #ffffff;
     font-family: Arial, sans-serif;
-    background-color: #2c2f33;
-    color: #ffffff;
     margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
 }
 
-/* Conteneur principal pour la page de création de rapport */
-.report-container {
-    width: 80%;
-    max-width: 800px;
-    background: #23272a;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Titre */
-h1 {
-    text-align: center;
-    color: #ffffff;
-    font-size: 2em;
-    margin-bottom: 20px;
-}
-
-/* Étiquettes et zones de saisie */
-label {
-    display: block;
-    margin-top: 10px;
-    font-weight: bold;
-    color: #7289da;
-}
-
-input, select, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: none;
-    background-color: #2f3136;
-    color: #ffffff;
-    font-size: 1em;
-}
-
-textarea {
-    resize: vertical;
-    height: 100px;
-}
-
-/* Boutons principaux */
-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-top: 20px;
-    font-size: 1em;
-    color: #ffffff;
-    background-color: #7289da;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-button:hover {
-    background-color: #5a6fa7;
-}
-
-/* Style des alertes */
-.alert-box {
-    background-color: #7289da;
-    color: #ffffff;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-    margin-top: 10px;
-}
-
-/* Bouton de retour */
-.back-button {
-    padding: 10px 20px;
-    font-size: 1em;
-    color: #ffffff;
-    background-color: #7289da;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    width: 100%;
-    text-align: center;
-}
-.back-button:hover {
-    background-color: #5a6fa7;
-}
-
-/* Conteneur des personnes impliquées */
-.person-container {
-    margin-top: 10px;
-    background-color: #2c2f33;
-    padding: 15px;
-    border-radius: 8px;
-    position: relative;
+/* Logo */
+.logo {
+    width: 80px;
+    height: auto;
     margin-bottom: 10px;
 }
 
-/* Bouton de suppression pour les personnes */
-.delete-button {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 5px 10px;
+/* Titre du dashboard */
+.dashboard-title {
+    color: #ffffff;
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+/* Indicateur de statut */
+.status-indicator {
+    font-size: 1.5em;
+    color: red;
+    font-weight: bold;
+}
+
+/* Barre latérale */
+.button-group .btn {
+    font-size: 1.2em;
+}
+
+.recap-container {
+    background-color: #23272a;
+    border-radius: 8px;
+    color: #ffffff;
+}
+
+/* Conteneur principal */
+.main-container {
+    background-color: #23272a;
+    border-radius: 8px;
+    color: #ffffff;
+}
+
+.alert-container {
+    background-color: #2f3136;
+    padding: 20px;
     border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-    display: block;
+    border: 2px solid #f44336;
+    margin-top: 15px;
+}
+
+footer {
+    color: #7289da;
+    font-size: 1em;
+    padding: 15px;
+}
+
+.btn-primary {
+    background-color: #7289da;
+    border: none;
+}
+
+.btn-danger {
+    background-color: #f44336;
+    border: none;
+}
+
+.btn-secondary {
+    background-color: #4b5058;
+    border: none;
 }
