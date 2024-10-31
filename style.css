@@ -64,7 +64,6 @@ header #status {
     background-color: #4c70ba;
 }
 
-/* Boutons spécifiques */
 #prendreService {
     background-color: #007bff;
 }
@@ -108,6 +107,21 @@ h3 {
 #alertes p, #recap p {
     font-size: 1em;
     color: #dddddd;
+}
+
+/* Bouton retour */
+.button-retour {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.button-retour:hover {
+    background-color: #0056b3;
 }
 
 /* Pied de page */
