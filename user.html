@@ -24,13 +24,35 @@
         h1 {
             color: #333;
         }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        .service-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .end-service-button {
+            background-color: #f44336;
+            color: white;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
     </style>
     <script>
         // Récupère le token d'accès depuis le stockage local
         const accessToken = localStorage.getItem('discord_token');
 
         if (accessToken) {
-            // Utilise le token pour obtenir les informations de l'utilisateur
             fetch('https://discord.com/api/users/@me', {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
@@ -45,15 +67,47 @@
                 console.error('Erreur lors de la récupération des infos utilisateur:', error);
             });
         } else {
-            // Redirige vers la page d'accueil si pas de token
             window.location.href = '/lspdapp/';
         }
+
+        // Fonction pour gérer le service de l'agent
+        function prendreService() {
+            localStorage.setItem('enService', 'true');
+            document.getElementById('serviceStatus').textContent = 'En service';
+            document.getElementById('serviceStatus').style.color = 'green';
+        }
+
+        function finirService() {
+            localStorage.setItem('enService', 'false');
+            document.getElementById('serviceStatus').textContent = 'Hors service';
+            document.getElementById('serviceStatus').style.color = 'red';
+        }
+
+        // Vérifie l'état du service lors du chargement de la page
+        window.onload = function() {
+            const enService = localStorage.getItem('enService') === 'true';
+            if (enService) {
+                document.getElementById('serviceStatus').textContent = 'En service';
+                document.getElementById('serviceStatus').style.color = 'green';
+            } else {
+                document.getElementById('serviceStatus').textContent = 'Hors service';
+                document.getElementById('serviceStatus').style.color = 'red';
+            }
+        };
     </script>
 </head>
 <body>
     <div class="container">
         <h1>Bienvenue, <span id="username">...</span> !</h1>
         <img id="avatar" src="" alt="Avatar" width="100" height="100" style="border-radius: 50%; margin-top: 20px;">
+        
+        <p id="serviceStatus">...</p>
+        
+        <button class="service-button" onclick="prendreService()">Prendre le service</button>
+        <button class="end-service-button" onclick="finirService()">Fin du service</button>
+        
+        <!-- Lien vers la page des alertes -->
+        <a href="alerts.html">Voir les alertes en cours</a>
     </div>
 </body>
 </html>
