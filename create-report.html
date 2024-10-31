@@ -69,6 +69,7 @@
             padding: 15px;
             border-radius: 8px;
             position: relative;
+            margin-bottom: 10px;
         }
         .delete-button {
             background-color: #f44336;
@@ -77,9 +78,8 @@
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
-            position: absolute;
-            top: 10px;
-            right: 10px;
+            margin-top: 10px;
+            display: block;
         }
         .error-message {
             color: #f44336;
@@ -89,18 +89,16 @@
     <script>
         const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
 
-        // Génère un ID de rapport incrémental
         let reportCount = 1;
         function genererIDRapport() {
             return `R${String(reportCount).padStart(3, '0')}`;
         }
 
-        // Mise en place initiale pour générer le numéro de rapport et l'afficher
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('reportID').textContent = genererIDRapport();
         });
 
-        // Fonction pour gérer l'ajout de personnes en fonction du nombre sélectionné
+        // Fonction pour ajouter des personnes avec champs pour objets
         function ajouterPersonnes() {
             const personnesContainer = document.getElementById('personnesContainer');
             personnesContainer.innerHTML = ''; // Réinitialise le conteneur
@@ -116,7 +114,16 @@
                     <input type="text" class="rolePersonne" required>
                     <label>Numéro ID :</label>
                     <input type="text" class="idPersonne" required>
-                    <button type="button" class="delete-button" onclick="supprimerPersonne(this)">Supprimer</button>
+
+                    <h3>Objets impliqués pour la personne ${i + 1}</h3>
+                    <div class="object-container">
+                        <label>Type d'objet (arme, véhicule) :</label>
+                        <input type="text" class="typeObjet" required>
+                        <label>Numéro de l'objet :</label>
+                        <input type="text" class="numeroObjet" required>
+                    </div>
+
+                    <button type="button" class="delete-button" onclick="supprimerPersonne(this)">Supprimer cette personne</button>
                 `;
                 personnesContainer.appendChild(personneDiv);
             }
@@ -143,7 +150,9 @@
                 const nom = personField.querySelector('.nomPersonne').value;
                 const role = personField.querySelector('.rolePersonne').value;
                 const id = personField.querySelector('.idPersonne').value;
-                personnes += `\nPersonne ${index + 1} :\n- Nom : ${nom}\n- Rôle : ${role}\n- Numéro ID : ${id}`;
+                const typeObjet = personField.querySelector('.typeObjet').value;
+                const numeroObjet = personField.querySelector('.numeroObjet').value;
+                personnes += `\nPersonne ${index + 1} :\n- Nom : ${nom}\n- Rôle : ${role}\n- Numéro ID : ${id}\n   Objet impliqué:\n   - Type : ${typeObjet}\n   - Numéro : ${numeroObjet}`;
             });
 
             const message = `**Nouveau rapport créé par : ${agent}**\n**Numéro de rapport :** ${reportID}\n**Type d'incident :** ${typeIncident}\n**Date :** ${dateIncident}\n**Description :** ${description}\n**Personnes concernées :**${personnes}`;
