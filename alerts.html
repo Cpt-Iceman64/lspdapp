@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alertes en cours</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 500px;
+        }
+        h1 {
+            color: #333;
+        }
+        .alert {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: #ffeb3b;
+            color: #333;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Alertes en cours</h1>
+        <div id="alertContainer">
+            <!-- Les alertes s'afficheront ici -->
+        </div>
+    </div>
+
+    <script>
+        // Exemple d'alertes en cours
+        const alertes = [
+            { id: 1, description: "Braquage en cours au centre-ville" },
+            { id: 2, description: "Agression signalée dans le quartier Nord" },
+            { id: 3, description: "Vol de véhicule dans le secteur Est" }
+        ];
+
+        // Fonction pour afficher les alertes
+        function afficherAlertes() {
+            const alertContainer = document.getElementById('alertContainer');
+            alertContainer.innerHTML = '';
+
+            alertes.forEach(alerte => {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert';
+                alertDiv.innerHTML = `
+                    <p>${alerte.description}</p>
+                    <button onclick="prendreAlerte(${alerte.id})">Prendre l'alerte</button>
+                `;
+                alertContainer.appendChild(alertDiv);
+            });
+        }
+
+        // Fonction pour prendre une alerte
+        function prendreAlerte(id) {
+            const alerte = alertes.find(a => a.id === id);
+            if (alerte) {
+                alert(`Vous avez pris en charge l'alerte : ${alerte.description}`);
+                // Ici, tu pourrais enregistrer cette action pour le suivi
+            }
+        }
+
+        // Affiche les alertes au chargement de la page
+        afficherAlertes();
+    </script>
+</body>
+</html>
