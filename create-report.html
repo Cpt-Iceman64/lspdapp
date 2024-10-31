@@ -3,264 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Création de Rapport - LSPD</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1e1f26;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 800px;
-            background: #2b2d3c;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            padding: 30px;
-            text-align: center;
-        }
-
-        .logo {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .logo img {
-            width: 100px;
-            height: auto;
-        }
-
-        h1 {
-            font-size: 2em;
-            color: #00aaff;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            text-align: left;
-            margin-top: 15px;
-            font-weight: bold;
-            color: #00aaff;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            border-radius: 5px;
-            border: none;
-            background-color: #3a3d4d;
-            color: #ffffff;
-            font-size: 1em;
-        }
-
-        textarea {
-            resize: vertical;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 20px;
-            font-size: 1.1em;
-            color: #ffffff;
-            background-color: #00aaff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #007bbd;
-        }
-
-        .back-button {
-            background-color: #555555;
-        }
-
-        .back-button:hover {
-            background-color: #333333;
-        }
-
-        .person-container {
-            background-color: #33354a;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 15px;
-            text-align: left;
-            position: relative;
-        }
-
-        .delete-button {
-            background-color: #ff4d4d;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        .delete-button:hover {
-            background-color: #d11a1a;
-        }
-    </style>
-    <script>
-        const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
-        const apiURL = "https://script.google.com/macros/s/AKfycbzj5MYllHtuFW0lJoHLKJZk6JQTbWeNUDGMXf9nKLU4/dev";
-
-        // Récupération du numéro de rapport
-        function obtenirNumeroRapport() {
-            return fetch(apiURL)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('reportID').textContent = data;
-                })
-                .catch(error => {
-                    console.error('Erreur lors de la récupération du numéro de rapport:', error);
-                    alert("Erreur lors de la récupération du numéro de rapport.");
-                });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            obtenirNumeroRapport();
-        });
-
-        // Fonction pour ajouter des champs pour chaque personne impliquée
-        function ajouterPersonnes() {
-            const personnesContainer = document.getElementById('personnesContainer');
-            personnesContainer.innerHTML = '';  // Réinitialise le conteneur
-
-            const nombrePersonnes = parseInt(document.getElementById('nombrePersonnes').value);
-            for (let i = 0; i < nombrePersonnes; i++) {
-                const personneDiv = document.createElement('div');
-                personneDiv.classList.add('person-container');
-                personneDiv.innerHTML = `
-                    <label>Nom de la personne ${i + 1} :</label>
-                    <input type="text" class="nomPersonne" placeholder="Nom complet" required>
-                    
-                    <label>Rôle (suspect, victime, etc.) :</label>
-                    <input type="text" class="rolePersonne" placeholder="Rôle de la personne" required>
-                    
-                    <label>Numéro ID :</label>
-                    <input type="text" class="idPersonne" placeholder="Numéro d'identité" required>
-                    
-                    <label>Type d'objet impliqué (arme, véhicule, etc.) :</label>
-                    <input type="text" class="typeObjet" placeholder="Type d'objet" required>
-                    
-                    <label>Numéro de l'objet :</label>
-                    <input type="text" class="numeroObjet" placeholder="Numéro de série ou d'immatriculation" required>
-
-                    <button type="button" class="delete-button" onclick="supprimerPersonne(this)">Supprimer cette personne</button>
-                `;
-                personnesContainer.appendChild(personneDiv);
-            }
-        }
-
-        // Fonction pour supprimer une personne
-        function supprimerPersonne(button) {
-            const personneDiv = button.parentElement;
-            personneDiv.remove();
-        }
-
-        // Fonction pour envoyer le rapport au webhook Discord
-        function envoyerRapport(event) {
-            event.preventDefault();
-
-            const agent = document.getElementById('agent').value;
-            const reportID = document.getElementById('reportID').textContent;
-            const typeIncident = document.getElementById('typeIncident').value;
-            const dateIncident = document.getElementById('dateIncident').value;
-            const description = document.getElementById('description').value;
-
-            let personnes = '';
-            document.querySelectorAll('.person-container').forEach((personField, index) => {
-                const nom = personField.querySelector('.nomPersonne').value;
-                const role = personField.querySelector('.rolePersonne').value;
-                const id = personField.querySelector('.idPersonne').value;
-                const typeObjet = personField.querySelector('.typeObjet').value;
-                const numeroObjet = personField.querySelector('.numeroObjet').value;
-                personnes += `\nPersonne ${index + 1} :\n- Nom : ${nom}\n- Rôle : ${role}\n- Numéro ID : ${id}\n   Objet impliqué:\n   - Type : ${typeObjet}\n   - Numéro : ${numeroObjet}`;
-            });
-
-            const message = `**Nouveau rapport créé par : ${agent}**\n**Numéro de rapport :** ${reportID}\n**Type d'incident :** ${typeIncident}\n**Date :** ${dateIncident}\n**Description :** ${description}\n**Personnes concernées :**${personnes}`;
-
-            fetch(webhookRapport, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content: message })
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert("Le rapport a été envoyé avec succès !");
-                    document.getElementById('reportForm').reset();
-                    obtenirNumeroRapport();
-                } else {
-                    alert("Erreur lors de l'envoi du rapport.");
-                }
-            })
-            .catch(error => {
-                console.error('Erreur lors de l\'envoi du webhook:', error);
-                alert("Erreur lors de l'envoi du rapport.");
-            });
-        }
-    </script>
+    <title>Création de Rapport - LSPD Application</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <header class="header">
         <div class="logo">
             <img src="logo.png" alt="LSPD Logo">
         </div>
         <h1>Création de Rapport</h1>
-        <form id="reportForm" onsubmit="envoyerRapport(event)">
-            <label for="agent">Nom de l'agent :</label>
-            <input type="text" id="agent" name="agent" required>
+    </header>
 
-            <label>Numéro de rapport :</label>
-            <p id="reportID"></p>
+    <main class="content">
+        <nav class="sidebar">
+            <ul>
+                <li><a href="user.html">Retour au Dashboard</a></li>
+            </ul>
+        </nav>
 
-            <label for="typeIncident">Type d'incident :</label>
-            <select id="typeIncident" name="typeIncident" required>
-                <option value="" disabled selected>Sélectionnez un type</option>
-                <option value="Tirs">Tirs</option>
-                <option value="Agression">Agression</option>
-                <option value="Vol">Vol</option>
-                <option value="Autre">Autre</option>
-            </select>
+        <section class="form-container">
+            <form id="reportForm">
+                <label for="agent">Nom de l'agent :</label>
+                <input type="text" id="agent" name="agent" required>
 
-            <label for="dateIncident">Date de l'incident :</label>
-            <input type="date" id="dateIncident" name="dateIncident" required>
+                <label>Numéro de rapport :</label>
+                <p id="reportID"></p>
 
-            <label for="description">Description :</label>
-            <textarea id="description" name="description" required></textarea>
+                <label for="typeIncident">Type d'incident :</label>
+                <select id="typeIncident" name="typeIncident" required>
+                    <option value="" disabled selected>Sélectionnez un type</option>
+                    <option value="Tirs">Tirs</option>
+                    <option value="Agression">Agression</option>
+                    <option value="Vol">Vol</option>
+                    <option value="Autre">Autre</option>
+                </select>
 
-            <label for="nombrePersonnes">Nombre de personnes impliquées :</label>
-            <select id="nombrePersonnes" onchange="ajouterPersonnes()" required>
-                <option value="" disabled selected>Choisissez le nombre</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-            </select>
+                <label for="dateIncident">Date de l'incident :</label>
+                <input type="date" id="dateIncident" name="dateIncident" required>
 
-            <div id="personnesContainer"></div>
+                <label for="description">Description :</label>
+                <textarea id="description" name="description" required></textarea>
 
-            <button type="submit">Envoyer le rapport</button>
-            <button type="button" onclick="history.back()" class="back-button">Retour</button>
-        </form>
-    </div>
+                <label for="nombrePersonnes">Nombre de personnes impliquées :</label>
+                <select id="nombrePersonnes" onchange="ajouterPersonnes()" required>
+                    <option value="" disabled selected>Choisissez le nombre</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+
+                <div id="personnesContainer"></div>
+
+                <button type="submit" onclick="envoyerRapport(event)">Envoyer le rapport</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>LSPD - Tous droits réservés © 2024</p>
+    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
