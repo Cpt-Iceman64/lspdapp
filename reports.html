@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Création de Rapport</title>
-    <link rel="stylesheet" href="style.css"> <!-- Lien vers un fichier CSS externe pour organiser le style -->
+    <link rel="stylesheet" href="style.css">
     <style>
-        /* Style interne pour ajustements spécifiques */
         body {
             font-family: Arial, sans-serif;
             background-color: #2c2f33;
@@ -17,7 +16,6 @@
             height: 100vh;
             margin: 0;
         }
-
         .report-container {
             width: 80%;
             max-width: 800px;
@@ -26,21 +24,18 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         }
-
         h1 {
             text-align: center;
             color: #ffffff;
             font-size: 1.8em;
             margin-bottom: 20px;
         }
-
         label {
             display: block;
             margin-top: 10px;
             font-weight: bold;
             color: #7289da;
         }
-
         input, select, textarea {
             width: 100%;
             padding: 10px;
@@ -51,12 +46,10 @@
             color: #ffffff;
             font-size: 1em;
         }
-
         textarea {
             resize: vertical;
             height: 100px;
         }
-
         button {
             display: block;
             width: 100%;
@@ -69,11 +62,9 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
         button:hover {
             background-color: #5a6fa7;
         }
-
         .person-container {
             margin-top: 10px;
             background-color: #2c2f33;
@@ -82,7 +73,6 @@
             position: relative;
             margin-bottom: 10px;
         }
-
         .delete-button {
             background-color: #f44336;
             color: white;
@@ -93,7 +83,6 @@
             margin-top: 10px;
             display: block;
         }
-
         .alert-box {
             background-color: #7289da;
             color: #ffffff;
@@ -108,7 +97,6 @@
     <div class="report-container">
         <h1>Création de Rapport</h1>
         
-        <!-- Encart pour l'alerte d'erreur en cas de besoin -->
         <div id="alertBox" class="alert-box" style="display: none;"></div>
 
         <form id="reportForm">
@@ -116,7 +104,7 @@
             <input type="text" id="agent" name="agent" placeholder="Entrez votre nom" required>
 
             <label>Numéro de rapport :</label>
-            <p id="reportID">R001</p> <!-- ID de rapport auto-généré -->
+            <p id="reportID">R001</p>
 
             <label for="typeIncident">Type d'incident :</label>
             <select id="typeIncident" name="typeIncident" required>
@@ -147,7 +135,6 @@
             <button type="submit">Envoyer le rapport</button>
         </form>
 
-        <!-- Bouton de retour vers le dashboard -->
         <button onclick="window.location.href='user.html'" style="
             padding: 10px 20px;
             font-size: 1em;
@@ -161,7 +148,8 @@
     </div>
 
     <script>
-        // Fonction pour générer l'ID du rapport
+        const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
+
         let reportCount = 1;
         function genererIDRapport() {
             return `R${String(reportCount).padStart(3, '0')}`;
@@ -175,7 +163,7 @@
 
         function ajouterPersonnes() {
             const personnesContainer = document.getElementById('personnesContainer');
-            personnesContainer.innerHTML = ''; // Réinitialise le conteneur
+            personnesContainer.innerHTML = '';
 
             const nombrePersonnes = parseInt(document.getElementById('nombrePersonnes').value);
             for (let i = 0; i < nombrePersonnes; i++) {
@@ -199,13 +187,11 @@
             }
         }
 
-        // Fonction pour supprimer une personne
         function supprimerPersonne(button) {
             const personneDiv = button.parentElement;
             personneDiv.remove();
         }
 
-        // Fonction pour envoyer le rapport
         function envoyerRapport(event) {
             event.preventDefault();
             const agent = document.getElementById('agent').value;
@@ -213,26 +199,11 @@
             const typeIncident = document.getElementById('typeIncident').value;
             const dateIncident = document.getElementById('dateIncident').value;
             const description = document.getElementById('description').value;
+
             let personnes = '';
             document.querySelectorAll('.person-container').forEach((personField, index) => {
                 const nom = personField.querySelector('.nomPersonne').value;
                 const role = personField.querySelector('.rolePersonne').value;
                 const id = personField.querySelector('.idPersonne').value;
                 const typeObjet = personField.querySelector('.typeObjet').value;
-                const numeroObjet = personField.querySelector('.numeroObjet').value;
-                personnes += `\nPersonne ${index + 1} :\n- Nom : ${nom}\n- Rôle : ${role}\n- Numéro ID : ${id}\n   Objet impliqué:\n   - Type : ${typeObjet}\n   - Numéro : ${numeroObjet}`;
-            });
-            const message = `**Nouveau rapport créé par : ${agent}**\n**Numéro de rapport :** ${reportID}\n**Type d'incident :** ${typeIncident}\n**Date :** ${dateIncident}\n**Description :** ${description}\n**Personnes concernées :**${personnes}`;
-            fetch(webhookRapport, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content: message })
-            });
-            reportCount++; // Incrémente le compteur de rapport
-            document.getElementById('reportForm').reset();
-            document.getElementById('reportID').textContent = genererIDRapport();
-        }
-    </script>
-</body>
-</html>
-
+                const numeroObjet = personField.querySe
