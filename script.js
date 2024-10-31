@@ -18,6 +18,21 @@ document.addEventListener('DOMContentLoaded', () => {
     obtenirNumeroRapport();
 });
 
+document.getElementById('statusIndicator').addEventListener('click', function() {
+    const statusIndicator = document.getElementById('statusIndicator');
+    
+    if (statusIndicator.classList.contains('hors-service')) {
+        statusIndicator.classList.remove('hors-service');
+        statusIndicator.classList.add('en-service');
+        statusIndicator.textContent = "En service";
+    } else {
+        statusIndicator.classList.remove('en-service');
+        statusIndicator.classList.add('hors-service');
+        statusIndicator.textContent = "Hors service";
+    }
+});
+
+
 // Fonction pour ajouter des champs pour chaque personne impliquée
 function ajouterPersonnes() {
     const personnesContainer = document.getElementById('personnesContainer');
