@@ -98,7 +98,6 @@
             document.getElementById('reportID').textContent = genererIDRapport();
         });
 
-        // Fonction pour ajouter des personnes avec champs pour objets
         function ajouterPersonnes() {
             const personnesContainer = document.getElementById('personnesContainer');
             personnesContainer.innerHTML = ''; // Réinitialise le conteneur
@@ -129,13 +128,11 @@
             }
         }
 
-        // Fonction pour supprimer une personne
         function supprimerPersonne(button) {
             const personneDiv = button.parentElement;
             personneDiv.remove();
         }
 
-        // Fonction pour envoyer le rapport au webhook Discord
         function envoyerRapport(event) {
             event.preventDefault();
 
@@ -225,8 +222,8 @@
             <button type="submit">Envoyer le rapport</button>
         </form>
 
-        <!-- Bouton de retour -->
-        <button onclick="history.back()" style="
+        <!-- Bouton de retour vers la page user -->
+        <button onclick="window.location.href='user.html'" style="
             padding: 10px 20px;
             font-size: 1em;
             color: #ffffff;
@@ -236,7 +233,7 @@
             cursor: pointer;
             margin-top: 20px;
         ">
-            Retour en arrière
+            Retour à la page utilisateur
         </button>
     </div>
 </body>
