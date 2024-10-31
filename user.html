@@ -3,49 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Dashboard LSPD</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- En-tête -->
-    <header>
-        <img src="https://media.discordapp.net/attachments/1301595212333842482/1301595288494145590/Logo_LSPDApp-removebg-preview.png?format=webp&quality=lossless" alt="LSPD Logo">
-        <h1>DASHBOARD</h1>
-        <h2 id="status">Hors service</h2>
-    </header>
-
-    <!-- Conteneur principal -->
-    <div id="main-container">
-        <!-- Barre latérale (1/3 gauche) -->
-        <section id="sidebar">
-            <button id="prendreService">Prendre le service</button>
-            <button id="finService">Fin de service</button>
-            <button id="creerRapport" onclick="location.href='reports.html'">Créer un rapport</button>
-            <button id="fichesCitoyens" onclick="location.href='database.html'">Fiches</button>
-        </section>
-
-        <!-- Zone de contenu (2/3 droite) -->
-        <main>
-            <h3>Bienvenue, <span id="pseudo">Utilisateur</span> !</h3>
-            <div id="alertes">
-                <h4>Alertes en cours</h4>
-                <p>Aucune alerte pour le moment.</p>
+    <div class="container-fluid">
+        <header class="text-center my-4">
+            <img src="https://media.discordapp.net/attachments/1301595212333842482/1301595288494145590/Logo_LSPDApp-removebg-preview.png" alt="LSPD Logo" class="logo">
+            <h1 class="dashboard-title">DASHBOARD</h1>
+            <p class="status-indicator text-center" id="status">Hors service</p>
+        </header>
+        
+        <div class="row">
+            <!-- Sidebar gauche -->
+            <div class="col-md-4">
+                <div class="button-group mb-4">
+                    <button class="btn btn-primary w-100 mb-2" id="btnStartService">Prendre le service</button>
+                    <button class="btn btn-danger w-100 mb-2" id="btnEndService">Fin de service</button>
+                    <button class="btn btn-secondary w-100 mb-2" id="btnCreateReport">Créer un rapport</button>
+                    <button class="btn btn-secondary w-100 mb-2" id="btnAccessCitizen">Fiches citoyens</button>
+                </div>
+                
+                <!-- Récap de l'agent -->
+                <div class="recap-container p-3">
+                    <h3>Récap de l'agent</h3>
+                    <p><strong>État :</strong> <span id="agentStatus">Hors service</span></p>
+                    <p><strong>Durée en service :</strong> <span id="serviceDuration">00:00:00</span></p>
+                    <p><strong>Rapports effectués :</strong> <span id="reportsCount">0</span></p>
+                </div>
             </div>
-            <div id="recap">
-                <h4>Récap de l'agent</h4>
-                <p>État : <span id="etatService">Hors service</span></p>
-                <p>Durée en service : <span id="dureeService">00:00:00</span></p>
-                <p>Rapports effectués : <span id="rapportsEffectues">0</span></p>
+
+            <!-- Conteneur principal -->
+            <div class="col-md-8">
+                <div class="main-container p-3">
+                    <h2>Bienvenue, <span id="username">Utilisateur</span> !</h2>
+                    <div class="alert-container mt-4">
+                        <h4>Alertes en cours</h4>
+                        <p id="alertMessage">Aucune alerte pour le moment.</p>
+                    </div>
+                </div>
             </div>
-        </main>
+        </div>
+
+        <footer class="text-center mt-4">
+            <p>LSPD - Tous droits réservés © 2024</p>
+        </footer>
     </div>
 
-    <!-- Pied de page -->
-    <footer>
-        <p>LSPD - Tous droits réservés © 2024</p>
-    </footer>
-
-    <!-- Script -->
     <script src="script.js"></script>
 </body>
 </html>
