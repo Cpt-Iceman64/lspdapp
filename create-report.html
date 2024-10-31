@@ -88,7 +88,7 @@
     </style>
     <script>
         const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
-        const apiURL = "AKfycbxIGMIGrNIkpzjCdkDkUDsLh3b60m4lCtcsTeo5WEwkJBL9ETwoDshbblx_qbl-z0Tnlg"; // Lien du script Google Apps Script
+        const apiURL = "https://script.google.com/macros/s/AKfycbzj5MYllHtuFW0lJoHLKJZk6JQTbWeNUDGMXf9nKLU4/dev"; // URL de l'API Google Apps Script
 
         // Récupération du numéro de rapport depuis Google Sheets via l'API Google Apps Script
         function obtenirNumeroRapport() {
@@ -172,7 +172,31 @@
             <label>Numéro de rapport :</label>
             <p id="reportID"></p>
 
-            <!-- Reste du formulaire pour le rapport -->
+            <label for="typeIncident">Type d'incident :</label>
+            <select id="typeIncident" name="typeIncident" required>
+                <option value="" disabled selected>Sélectionnez le type d'incident</option>
+                <option value="Tirs">Tirs</option>
+                <option value="Agression">Agression</option>
+                <option value="Vol">Vol</option>
+                <option value="Autre">Autre</option>
+            </select>
+
+            <label for="dateIncident">Date de l'incident :</label>
+            <input type="date" id="dateIncident" name="dateIncident" required>
+
+            <label for="description">Description :</label>
+            <textarea id="description" name="description" required></textarea>
+
+            <label for="nombrePersonnes">Nombre de personnes concernées :</label>
+            <select id="nombrePersonnes" required>
+                <option value="" disabled selected>Sélectionnez le nombre de personnes</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+
+            <div id="personnesContainer"></div>
 
             <button type="submit">Envoyer le rapport</button>
         </form>
