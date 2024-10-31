@@ -1,6 +1,7 @@
 // Configuration des Webhooks
 const webhookPriseFinService = 'https://discord.com/api/webhooks/1301524280529518602/GrQETveJvGKN4CgX-BNQuqafwTP6j2e_IaaexX3tbrG6iGobixweOc_OrTg6CwTKwNMP';
-let startTime; // Variable pour stocker l'heure de début de service
+let startTime;
+let isServiceOn = false; // Variable pour suivre l'état du service
 
 // Récupère le pseudo de l'utilisateur dans le serveur Discord
 async function obtenirPseudoServeur() {
@@ -37,15 +38,21 @@ function updateStatus(isInService) {
 
     if (isInService) {
         startTime = new Date(); // Démarre le chrono
+        isServiceOn = true;
         etatService.textContent = 'En service';
         statusElement.textContent = "En service";
         statusElement.style.color = "green";
+        document.getElementById("prendreService").style.backgroundColor = "green";
+        document.getElementById("finService").style.backgroundColor = "";
         envoyerNotificationDiscord(`${pseudo} est en service !`);
     } else {
         const dureeService = calculerDureeService();
+        isServiceOn = false;
         etatService.textContent = 'Hors service';
         statusElement.textContent = "Hors service";
         statusElement.style.color = "red";
+        document.getElementById("prendreService").style.backgroundColor = "";
+        document.getElementById("finService").style.backgroundColor = "red";
         envoyerNotificationDiscord(`${pseudo} est hors service. Durée : ${dureeService}`);
     }
 }
@@ -80,8 +87,12 @@ function envoyerNotificationDiscord(message) {
 }
 
 // Gérer les clics sur les boutons
-document.getElementById('prendreService').addEventListener('click', () => updateStatus(true));
-document.getElementById('finService').addEventListener('click', () => updateStatus(false));
+document.getElementById('prendreService').addEventListener('click', () => {
+    if (!isServiceOn) updateStatus(true);
+});
+document.getElementById('finService').addEventListener('click', () => {
+    if (isServiceOn) updateStatus(false);
+});
 
 // Charger le pseudo au chargement de la page
 obtenirPseudoServeur();
