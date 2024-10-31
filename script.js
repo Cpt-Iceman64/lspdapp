@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Redirection vers la page de création de rapport
     const creerRapportButton = document.getElementById('creerRapport');
     creerRapportButton.addEventListener('click', function () {
-        window.location.href = "rapport.html";  // Redirection vers la page rapport
+        window.location.href = "report.html";  // Redirection vers la page rapport
     });
 });
 
