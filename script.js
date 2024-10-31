@@ -11,25 +11,30 @@ let seconds = 0;
 let minutes = 0;
 let hours = 0;
 
-// Fonction pour démarrer le service
-function startService() {
-    statusIndicator.textContent = "En service";
-    statusIndicator.style.color = "green";
-    btnStartService.classList.remove("btn-primary");
-    btnStartService.classList.add("btn-success");
-    agentStatus.textContent = "En service";
-    startTimer();
-}
+document.addEventListener("DOMContentLoaded", function () {
+    const prendreServiceBtn = document.getElementById("prendreService");
+    const finServiceBtn = document.getElementById("finService");
 
-// Fonction pour arrêter le service
-function endService() {
-    statusIndicator.textContent = "Hors service";
-    statusIndicator.style.color = "red";
-    btnEndService.classList.remove("btn-danger");
-    btnEndService.classList.add("btn-secondary");
-    agentStatus.textContent = "Hors service";
-    stopTimer();
-}
+    // Initialisation des couleurs de boutons
+    prendreServiceBtn.style.backgroundColor = "#4CAF50"; // Vert pour Prendre le service
+    finServiceBtn.style.backgroundColor = "#f44336"; // Rouge pour Fin de service (par défaut hors service)
+
+    // Fonction pour Prendre le service
+    prendreServiceBtn.addEventListener("click", function () {
+        prendreServiceBtn.style.backgroundColor = "#4CAF50"; // Vert
+        finServiceBtn.style.backgroundColor = "#f44336"; // Rouge
+        // Code à exécuter pour "Prendre le service"
+        console.log("Service pris");
+    });
+
+    // Fonction pour Fin de service
+    finServiceBtn.addEventListener("click", function () {
+        prendreServiceBtn.style.backgroundColor = "#4285F4"; // Bleu
+        finServiceBtn.style.backgroundColor = "#f44336"; // Rouge
+        // Code à exécuter pour "Fin de service"
+        console.log("Service terminé");
+    });
+});
 
 // Gestion du timer
 function startTimer() {
