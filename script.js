@@ -1,5 +1,5 @@
-// URL du webhook Discord - remplace TON_WEBHOOK_ID et TON_WEBHOOK_TOKEN par les valeurs de ton webhook
-const webhookUrl = 'https://discord.com/api/webhooks/TON_WEBHOOK_ID/TON_WEBHOOK_TOKEN';
+// URL du webhook Discord
+const webhookUrl = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
 
 // Fonction pour envoyer un message à Discord
 function sendToDiscord(message) {
