@@ -32,19 +32,36 @@ body {
     letter-spacing: 1px;
 }
 
-/* Indicateur de statut */
+/* Styles de base pour l'indicateur de service */
 .status-indicator {
-    margin-top: 10px;
     padding: 10px 20px;
     border-radius: 8px;
     font-weight: bold;
     color: #ffffff;
     text-align: center;
     font-size: 1em;
-    background-color: #f44336; /* Rouge pour hors service */
-    border: none;
+    width: 150px;
+    margin: 0 auto;
 }
 
+/* Animation clignotante */
+@keyframes clignote {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Styles pour le mode "Hors service" */
+.hors-service {
+    background-color: #f44336; /* Rouge */
+    animation: clignote 1s infinite;
+}
+
+/* Styles pour le mode "En service" */
+.en-service {
+    background-color: #4CAF50; /* Vert */
+    animation: clignote 1s infinite;
+}
 /* Conteneur principal pour Desktop */
 .container {
     display: flex;
