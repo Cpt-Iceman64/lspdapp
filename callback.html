@@ -8,40 +8,9 @@
 </head>
 <body>
     <main class="content">
-        <h2>Connexion réussie, redirection en cours...</h2>
+        <h2>Connexion réussie !</h2>
+        <p>Vous avez été redirigé avec succès. Vous pouvez maintenant accéder à votre espace utilisateur.</p>
+        <button onclick="window.location.href='user.html'">Aller au tableau de bord</button>
     </main>
-
-    <script>
-        // Récupération du code d'autorisation de l'URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-
-        if (code) {
-            // URL de votre script Google Apps
-            const googleScriptURL = "https://script.google.com/macros/s/AKfycbzj5MYllHtuFW0lJoHLKJZk6JQTbWeNUDGMXf9nKLU4/dev";
-
-            // Envoi du code d'autorisation au script Google Apps pour traitement
-            fetch(`${googleScriptURL}?code=${code}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Redirection vers la page utilisateur après succès
-                        window.location.href = "user.html";
-                    } else {
-                        // Affiche un message d'erreur et redirige vers l'accueil si l'authentification échoue
-                        alert("Erreur lors de la connexion. Veuillez réessayer.");
-                        window.location.href = "index.html";
-                    }
-                })
-                .catch(error => {
-                    console.error("Erreur lors de la redirection:", error);
-                    alert("Erreur lors de la redirection. Veuillez réessayer.");
-                    window.location.href = "index.html";
-                });
-        } else {
-            alert("Code d'autorisation manquant.");
-            window.location.href = "index.html";
-        }
-    </script>
 </body>
 </html>
