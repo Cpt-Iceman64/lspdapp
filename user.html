@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Utilisateur</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+    <script>
+        // Récupère le token d'accès depuis le stockage local
+        const accessToken = localStorage.getItem('discord_token');
+
+        if (accessToken) {
+            // Utilise le token pour obtenir les informations de l'utilisateur
+            fetch('https://discord.com/api/users/@me', {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+            .then(response => response.json())
+            .then(user => {
+                document.getElementById('username').textContent = user.username;
+                document.getElementById('avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des infos utilisateur:', error);
+            });
+        } else {
+            // Redirige vers la page d'accueil si pas de token
+            window.location.href = '/lspdapp/';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenue, <span id="username">...</span> !</h1>
+        <img id="avatar" src="" alt="Avatar" width="100" height="100" style="border-radius: 50%; margin-top: 20px;">
+    </div>
+</body>
+</html>
