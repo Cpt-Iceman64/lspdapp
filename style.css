@@ -1,90 +1,125 @@
-/* Conteneur principal de la page */
+/* Style général du corps */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2c2f33; /* Fond sombre */
+    color: #ffffff; /* Texte en blanc */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Conteneur principal */
 .container {
-    display: flex; /* Aligne les éléments horizontalement */
-    flex-direction: column; /* Aligne les éléments en colonne */
-    align-items: center; /* Centre les éléments horizontalement */
-    gap: 10px; /* Espace entre les éléments */
-    padding: 20px; /* Espace interne du conteneur */
+    display: flex;
+    flex-direction: row;
+    max-width: 1200px;
+    width: 100%;
+    padding: 20px;
+    gap: 20px; /* Espace entre les colonnes */
 }
 
-/* Boutons de service (Prendre le service et Fin de service) */
+/* Header avec le logo et le titre */
+.header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #23272a;
+}
+
+.header h1 {
+    font-size: 2em;
+    color: #ffffff;
+}
+
+.logo {
+    width: 50px;
+    height: auto;
+}
+
+/* Section de gauche pour les boutons et le récap */
+.left-panel {
+    flex: 1;
+    background-color: #2c2f33;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .service-btn {
-    padding: 10px 20px; /* Espace interne autour du texte */
-    font-size: 1em; /* Taille de la police */
-    margin: 5px; /* Espace autour du bouton */
-    cursor: pointer; /* Curseur change en "pointer" (main) */
-    border: none; /* Supprime la bordure */
-    border-radius: 5px; /* Bords arrondis */
-    color: #ffffff; /* Couleur du texte en blanc */
-    width: 150px; /* Largeur des boutons */
-    transition: background-color 0.3s ease; /* Animation douce pour le changement de couleur */
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-/* Couleur par défaut du bouton "Prendre le service" */
-#prendreService {
-    background-color: #7289da; /* Bleu */
-}
-
-/* Couleur par défaut du bouton "Fin de service" */
-#finService {
-    background-color: #7289da; /* Bleu */
-}
-
-/* Classe ajoutée pour le bouton actif "Prendre le service" */
 .service-on {
     background-color: #4CAF50; /* Vert pour "Prendre le service" activé */
 }
 
-/* Classe ajoutée pour le bouton actif "Fin de service" */
 .service-off {
     background-color: #f44336; /* Rouge pour "Fin de service" activé */
 }
 
-/* Indicateur de statut (En service / Hors service) */
-.status-indicator {
-    padding: 10px 20px; /* Espace interne autour du texte */
-    border-radius: 8px; /* Bords arrondis */
-    font-weight: bold; /* Texte en gras */
-    color: #ffffff; /* Couleur du texte en blanc */
-    text-align: center; /* Texte centré */
-    font-size: 1em; /* Taille de la police */
-    margin-top: 20px; /* Espace en haut */
-    width: 150px; /* Largeur de l'indicateur */
-    animation: clignote 1s infinite; /* Animation de clignotement */
+#prendreService {
+    background-color: #7289da; /* Bleu pour état par défaut */
 }
 
-/* Animation de clignotement de l'indicateur */
-@keyframes clignote {
-    0% { opacity: 1; } /* Opacité à 100% */
-    50% { opacity: 0.5; } /* Opacité à 50% */
-    100% { opacity: 1; } /* Retour à 100% */
+#finService {
+    background-color: #7289da; /* Bleu pour état par défaut */
 }
 
-/* Indicateur de statut pour l'état "Hors service" */
-.hors-service {
-    background-color: #f44336; /* Fond rouge pour Hors service */
+.recap {
+    margin-top: 20px;
+    background-color: #23272a;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 1em;
+    color: #ffffff;
 }
 
-/* Indicateur de statut pour l'état "En service" */
-.en-service {
-    background-color: #4CAF50; /* Fond vert pour En service */
+/* Section de droite pour le tableau de bord */
+.right-panel {
+    flex: 2;
+    background-color: #23272a;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Styles pour le logo et le titre du dashboard */
-.header {
-    display: flex; /* Aligne les éléments horizontalement */
-    align-items: center; /* Centre verticalement les éléments */
-    justify-content: center; /* Centre horizontalement les éléments */
-    gap: 10px; /* Espace entre le logo et le titre */
-    margin-bottom: 20px; /* Espace en bas du header */
+/* Bienvenue et alertes */
+.welcome {
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.logo {
-    width: 40px; /* Largeur du logo */
-    height: auto; /* Hauteur ajustée automatiquement */
+.alert-box {
+    background-color: #2c2f33;
+    color: #f44336;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1em;
+    margin-top: 10px;
 }
 
-h1 {
-    font-size: 1.8em; /* Taille de la police pour le titre */
-    color: #ffffff; /* Couleur du texte en blanc */
+/* Footer */
+footer {
+    width: 100%;
+    padding: 10px 0;
+    background-color: #2c2f33;
+    color: #ffffff;
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: auto;
 }
