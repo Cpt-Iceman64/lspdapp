@@ -1,10 +1,13 @@
-/* Police Roboto pour l'apparence professionnelle */
+/* Style de base */
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #1e1f26;
     color: #ffffff;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .header {
@@ -12,83 +15,96 @@ body {
     padding: 20px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.header .logo img {
+.header .logo {
     width: 80px;
+    margin-bottom: 10px;
 }
 
 .header h1 {
-    margin: 10px 0 0;
     color: #00aaff;
+    margin: 0;
 }
 
-.content {
+.status-indicator {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.service-on {
+    background-color: #4CAF50; /* Vert pour "En service" */
+}
+
+.service-off {
+    background-color: #f44336; /* Rouge pour "Hors service" */
+}
+
+/* Conteneur principal avec sidebar et contenu central */
+.container {
     display: flex;
-    padding: 20px;
-    max-width: 1200px;
-    margin: auto;
+    flex: 1;
 }
 
 .sidebar {
-    flex: 1;
-    padding: 20px;
+    width: 30%;
     background-color: #2e303d;
-    border-radius: 10px;
-    margin-right: 20px;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-
-.sidebar a, .sidebar button {
-    background-color: #555555;
-    color: #ffffff;
-    padding: 10px;
-    display: block;
-    margin: 10px 0;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    cursor: pointer;
-}
-
-.sidebar a:hover, .sidebar button:hover {
-    background-color: #333333;
-}
-
-.main-content, .form-container {
-    flex: 3;
     padding: 20px;
-    background: #2b2d3c;
-    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-label, h2 {
-    color: #00aaff;
-    font-weight: bold;
-}
-
-input, select, textarea, button {
-    width: 100%;
-    padding: 12px;
-    border-radius: 5px;
-    margin-top: 8px;
-    background-color: #3a3d4d;
+.sidebar button {
+    padding: 10px;
+    font-size: 1em;
     color: #ffffff;
+    background-color: #7289da;
     border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left;
 }
 
-textarea {
-    resize: vertical;
+.sidebar button:hover {
+    background-color: #5a6fa7;
 }
 
-button {
-    background-color: #00aaff;
+.main-content {
+    width: 70%;
+    padding: 20px;
 }
 
-button:hover {
-    background-color: #007bbd;
+.welcome-container {
+    background: #2e303d;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.welcome-container h2 {
+    color: #00aaff;
+}
+
+.alert-box {
+    background-color: #3a3d4d;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+/* Pied de page */
+.footer {
+    background-color: #2b2d3c;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9em;
+    color: #999;
 }
