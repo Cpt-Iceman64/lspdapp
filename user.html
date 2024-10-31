@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
     <!-- En-tête -->
     <header>
@@ -12,8 +20,8 @@
         <section id="sidebar">
             <button id="prendreService">Prendre le service</button>
             <button id="finService">Fin de service</button>
-            <button id="creerRapport">Créer un rapport</button>
-            <button id="fichesCitoyens">Fiches</button>
+            <button id="creerRapport" onclick="location.href='rapport.html'">Créer un rapport</button>
+            <button id="fichesCitoyens" onclick="location.href='citoyens.html'">Fiches</button>
         </section>
 
         <!-- Zone de contenu (2/3 droite) -->
@@ -36,4 +44,8 @@
     <footer>
         <p>LSPD - Tous droits réservés © 2024</p>
     </footer>
+
+    <!-- Script -->
+    <script src="script.js"></script>
 </body>
+</html>
