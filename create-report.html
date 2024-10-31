@@ -63,66 +63,47 @@
         button:hover {
             background-color: #5a6fa7;
         }
-
+        .conditional-field {
+            display: none;
+        }
+        .error-message {
+            color: #f44336;
+            margin-top: 10px;
+        }
     </style>
     <script>
-        // URL du webhook pour les rapports
-        const webhookRapport = 'https://discord.com/api/webhooks/1301527281092530196/L9d9-KGAsJ5Klnpssn0RTc8oUvbXOCConzdvIXHqXnfStHA987YHL7a8gJet9mw-w-H2';
-
-        // Vérification de l'état de service
-        window.onload = function() {
-            const enService = localStorage.getItem('enService') === 'true';
-            if (!enService) {
-                alert("Vous devez être en service pour créer un rapport.");
-                window.location.href = 'user.html'; // Redirige vers la page user.html pour prendre le service
-            }
-        };
-
-        function envoyerRapport() {
-            // Récupère les valeurs du formulaire
-            const titre = document.getElementById('titre').value;
-            const citoyen = document.getElementById('citoyen').value;
+        // Fonction pour afficher les champs conditionnels en fonction du type d'incident
+        function afficherChampsConditionnels() {
             const typeIncident = document.getElementById('typeIncident').value;
-            const dateIncident = document.getElementById('dateIncident').value;
-            const description = document.getElementById('description').value;
-
-            // Vérifie que les champs obligatoires sont remplis
-            if (!titre || !citoyen || !typeIncident || !dateIncident || !description) {
-                alert("Veuillez remplir tous les champs.");
-                return;
-            }
-
-            // Crée le message pour le webhook
-            const message = `**Nouveau rapport créé :**\n**Titre :** ${titre}\n**Citoyen concerné :** ${citoyen}\n**Type d'incident :** ${typeIncident}\n**Date :** ${dateIncident}\n**Description :** ${description}`;
-
-            // Envoie le message au webhook Discord
-            fetch(webhookRapport, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ content: message })
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert("Le rapport a été envoyé avec succès !");
-                    // Réinitialise le formulaire
-                    document.getElementById('reportForm').reset();
-                } else {
-                    alert("Erreur lors de l'envoi du rapport.");
-                }
-            })
-            .catch(error => {
-                console.error('Erreur lors de l\'envoi du webhook:', error);
-                alert("Erreur lors de l'envoi du rapport.");
-            });
+            document.getElementById('serialField').style.display = (typeIncident === 'Tirs' || typeIncident === 'Agression avec arme') ? 'block' : 'none';
+            document.getElementById('plaqueField').style.display = (typeIncident === 'Vol de véhicule' || typeIncident === 'Accident de la route') ? 'block' : 'none';
+            document.getElementById('idField').style.display = (typeIncident !== '') ? 'block' : 'none';
         }
+
+        // Fonction de vérification pour la cohérence des données (exemple simplifié)
+        function verifierCohérence() {
+            const nomCitoyen = document.getElementById('citoyen').value;
+            const numeroID = document.getElementById('numeroID').value;
+            
+            // Simuler une vérification de cohérence (exemple avec des données statiques)
+            if (nomCitoyen === "John Doe" && numeroID !== "123456789") {
+                document.getElementById('errorMessage').textContent = "Attention : possible usurpation d'identité pour " + nomCitoyen + ".";
+            } else {
+                document.getElementById('errorMessage').textContent = ""; // Pas de problème
+            }
+        }
+
+        // Appel de la fonction lors de la sélection du type d'incident
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('typeIncident').addEventListener('change', afficherChampsConditionnels);
+            document.getElementById('numeroID').addEventListener('blur', verifierCohérence); // Vérifie la cohérence après saisie du numéro d'identité
+        });
     </script>
 </head>
 <body>
     <div class="report-form">
         <h1>Création de Rapport</h1>
-        <form id="reportForm" onsubmit="event.preventDefault(); envoyerRapport();">
+        <form id="reportForm">
             <label for="titre">Titre du rapport :</label>
             <input type="text" id="titre" name="titre" required>
 
@@ -132,11 +113,27 @@
             <label for="typeIncident">Type d'incident :</label>
             <select id="typeIncident" name="typeIncident" required>
                 <option value="" disabled selected>Sélectionnez le type d'incident</option>
-                <option value="Vol">Vol</option>
-                <option value="Agression">Agression</option>
-                <option value="Accident">Accident</option>
+                <option value="Tirs">Tirs</option>
+                <option value="Agression avec arme">Agression avec arme</option>
+                <option value="Vol de véhicule">Vol de véhicule</option>
+                <option value="Accident de la route">Accident de la route</option>
                 <option value="Autre">Autre</option>
             </select>
+
+            <div id="serialField" class="conditional-field">
+                <label for="serialNumber">Numéro de série de l'arme :</label>
+                <input type="text" id="serialNumber" name="serialNumber">
+            </div>
+
+            <div id="plaqueField" class="conditional-field">
+                <label for="plaque">Plaque d'immatriculation :</label>
+                <input type="text" id="plaque" name="plaque">
+            </div>
+
+            <div id="idField" class="conditional-field">
+                <label for="numeroID">Numéro de carte d'identité :</label>
+                <input type="text" id="numeroID" name="numeroID">
+            </div>
 
             <label for="dateIncident">Date de l'incident :</label>
             <input type="date" id="dateIncident" name="dateIncident" required>
@@ -145,20 +142,8 @@
             <textarea id="description" name="description" required></textarea>
 
             <button type="submit">Envoyer le rapport</button>
+            <p id="errorMessage" class="error-message"></p>
         </form>
-
-          <button onclick="history.back()" style="
-    padding: 10px 20px;
-    font-size: 1em;
-    color: #ffffff;
-    background-color: #7289da;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-">
-    Retour en arrière
-</button>
     </div>
 </body>
 </html>
