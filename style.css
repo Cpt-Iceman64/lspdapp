@@ -117,12 +117,13 @@ body {
 
 /* Conteneur de bienvenue */
 .welcome-container {
-    background: #3a3d4d;
-    padding: 14px;
-    border-radius: 10px;
+    background: #2f3b4f;
+    padding: 25px;
+    border-radius: 12px;
     text-align: center;
     width: 100%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+    border: 1px solid #00aaff;
 }
 
 .welcome-container h2 {
@@ -132,13 +133,14 @@ body {
 
 /* Alertes */
 .alert-box {
-    background-color: #3a3d4d;
-    padding: 10px;
-    margin-top: 10px;
+    background-color: #3b414d;
+    padding: 20px;
+    margin-top: 15px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 6px rgba(255, 204, 0, 0.3); /* Effet ombre jaune pour les alertes */
     text-align: center;
     width: 100%;
+    border: 1px solid #ffcc00;
 }
 
 /* Footer */
