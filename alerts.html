@@ -5,13 +5,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <script>
-            // Script.... dans le body ???  Serieux ??? 
             // Exemple d'alertes en cours
             const alertes = [
                 { id: 1, description: "Braquage en cours au centre-ville" },
                 { id: 2, description: "Agression signalée dans le quartier Nord" },
                 { id: 3, description: "Vol de véhicule dans le secteur Est" }
             ]; 
+
+        </script>
+
+        <script>
+            // Affiche les alertes au chargement de la page
+            afficherAlertes();
 
             // Fonction pour afficher les alertes
             function afficherAlertes() {
@@ -37,9 +42,6 @@
                     // Ici, tu pourrais enregistrer cette action pour le suivi
                 }
             }
-
-            // Affiche les alertes au chargement de la page
-            afficherAlertes();
         </script>
 
         <title>Alertes en cours</title>
@@ -90,6 +92,7 @@
         <div class="container">
             <h1>Alertes en cours</h1>
             <div id="alertContainer">
+                <button onclick="afficherAlertes">Afficher Alertes</button>
                 <!-- Les alertes s'afficheront ici -->
                  <!-- Et pourquoi elles ne sont pas là ? -->
             </div>
