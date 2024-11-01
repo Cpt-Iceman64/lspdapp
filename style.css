@@ -52,6 +52,14 @@ h1 {
     margin-bottom: 10px;
 }
 
+.welcome-container .profile-picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid #b38e00; /* Bordure dorée */
+    margin-top: 10px;
+}
+
 /* Formulaires */
 label {
     font-weight: bold;
