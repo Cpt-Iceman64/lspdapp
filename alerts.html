@@ -9,7 +9,8 @@
             const alertes = [
                 { id: 1, description: "Braquage en cours au centre-ville" },
                 { id: 2, description: "Agression signalée dans le quartier Nord" },
-                { id: 3, description: "Vol de véhicule dans le secteur Est" }
+                { id: 3, description: "Vol de véhicule dans le secteur Est" },
+                { id: 4, description: "Vol de véhicule dans le secteur Ouest" }
             ]; 
 
         </script>
@@ -21,17 +22,16 @@
             // Fonction pour afficher les alertes
             function afficherAlertes() {
                 const alertContainer = document.getElementById('alertContainer');
-                alertContainer.innerHTML = '';
 
-                alertes.forEach(alerte => {
-                    const alertDiv = document.createElement('div');
-                    alertDiv.className = 'alert';
-                    alertDiv.innerHTML = `
-                        <p>${alerte.description}</p>
-                        <button onclick="prendreAlerte(${alerte.id})">Prendre l'alerte</button>
-                    `;
-                    alertContainer.appendChild(alertDiv);
-                });
+                 alertes.forEach(alerte => {
+                     const alertDiv = document.createElement('div');
+                     alertDiv.className = 'alert';
+                     alertDiv.innerHTML = `
+                         <p>${alerte.description}</p>
+                         <button onclick="prendreAlerte(${alerte.id})">Prendre l'alerte</button>
+                     `;
+                     alertContainer.appendChild(alertDiv);
+                 });
             }
 
             // Fonction pour prendre une alerte
@@ -92,7 +92,8 @@
         <div class="container">
             <h1>Alertes en cours</h1>
             <div id="alertContainer">
-                <button onclick="afficherAlertes">Afficher Alertes</button>
+                <button onClick="afficherAlertes()">Afficher Alertes</button>
+                
                 <!-- Les alertes s'afficheront ici -->
                  <!-- Et pourquoi elles ne sont pas là ? -->
             </div>
