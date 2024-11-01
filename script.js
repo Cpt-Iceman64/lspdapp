@@ -36,6 +36,41 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// Fonction pour récupérer les informations de l'utilisateur Discord
+async function getUserInfo(token) {
+    try {
+        const response = await fetch("https://discord.com/api/v10/users/@me", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        const userData = await response.json();
+        if (userData.avatar) {
+            const avatarURL = `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`;
+            displayUserProfile(userData.username, avatarURL);
+        } else {
+            displayUserProfile(userData.username, "default-avatar.png"); // Image par défaut si pas d'avatar
+        }
+    } catch (error) {
+        console.error("Erreur lors de la récupération des données utilisateur:", error);
+    }
+}
+
+// Fonction pour afficher le profil de l'utilisateur
+function displayUserProfile(username, avatarURL) {
+    const welcomeContainer = document.querySelector(".welcome-container");
+    welcomeContainer.innerHTML = `
+        <h2>Bienvenue, ${username} !</h2>
+        <img src="${avatarURL}" alt="Photo de profil" class="profile-picture">
+        <p>Prêt pour le service !</p>
+    `;
+}
+
+// Appel de la fonction avec le token d'accès (à adapter en fonction de ta logique)
+const token = "TOKEN_D_ACCES_DISCORD"; // Remplace par le token que tu récupères à l'authentification
+getUserInfo(token);
+
+
 // Gestion du timer
 function startTimer() {
     timer = setInterval(() => {
