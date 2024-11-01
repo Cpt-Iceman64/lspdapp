@@ -3,54 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard LSPD</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css"> <!-- Assure-toi d'avoir le CSS pour le style -->
 </head>
 <body>
-    <div class="container-fluid">
-        <header class="text-center my-4">
-            <img src="https://media.discordapp.net/attachments/1301595212333842482/1301595288494145590/Logo_LSPDApp-removebg-preview.png?ex=67250c93&is=6723bb13&hm=a23ae7f966a1fb7299905119a96f70c39117249f00a404f69df2143113cea63d&=&format=webp&quality=lossless" class="logo">
-            <h1 class="dashboard-title">DASHBOARD</h1>
-            <p class="status-indicator text-center" id="status">Hors service</p>
-        </header>
-        
-        <div class="row">
-            <!-- Sidebar gauche -->
-            <div class="col-md-4">
-                <div class="button-group mb-4">
-                    <button id="prendreService" class="btn btn-primary">Prendre le service</button>
-                    <button id="finService" class="btn btn-danger">Fin de service</button>
-                    <button class="btn btn-secondary w-100 mb-2" id="btnCreateReport">Créer un rapport</button>
-                    <button class="btn btn-secondary w-100 mb-2" id="btnAccessCitizen">Fiches citoyens</button>
-                </div>
-                
-                <!-- Récap de l'agent -->
-                <div class="recap-container p-3">
-                    <h3>Récap de l'agent</h3>
-                    <p><strong>État :</strong> <span id="agentStatus">Hors service</span></p>
-                    <p><strong>Durée en service :</strong> <span id="serviceDuration">00:00:00</span></p>
-                    <p><strong>Rapports effectués :</strong> <span id="reportsCount">0</span></p>
-                </div>
-            </div>
+    <header class="dashboard-header">
+        <img src="URL_DU_LOGO" alt="Logo LSPD" class="logo">
+        <h1>DASHBOARD</h1>
+        <div id="status-indicator">Hors service</div> <!-- Statut de service -->
+    </header>
 
-            <!-- Conteneur principal -->
-            <div class="col-md-8">
-                <div class="main-container p-3">
-                    <h2>Bienvenue, <span id="username">Utilisateur</span> !</h2>
-                    <div class="alert-container mt-4">
-                        <h4>Alertes en cours</h4>
-                        <p id="alertMessage">Aucune alerte pour le moment.</p>
-                    </div>
-                </div>
-            </div>
+    <div class="container">
+        <!-- Section de bienvenue -->
+        <div class="welcome-container">
+            <!-- Le nom de l'utilisateur et l'avatar seront insérés ici par le JavaScript -->
+            <h2>Bienvenue, Utilisateur !</h2> 
+            <img src="default-avatar.png" alt="Photo de profil" class="profile-picture" id="profile-picture">
+            <p id="service-status">Prêt pour le service !</p>
         </div>
 
-        <footer class="text-center mt-4">
-            <p>LSPD - Tous droits réservés © 2024</p>
-        </footer>
+        <!-- Boutons pour prendre/fin de service et créer un rapport -->
+        <div class="actions">
+            <button id="take-service" onclick="prendreService()">Prendre le service</button>
+            <button id="end-service" onclick="finService()">Fin de service</button>
+            <button onclick="location.href='reports.html'">Créer un rapport</button>
+            <button onclick="location.href='database.html'">Fiches</button>
+        </div>
+
+        <!-- Récap de l'agent -->
+        <div class="recap-container">
+            <h3>Récap de l'agent</h3>
+            <p>État : <span id="etat-service">Hors service</span></p>
+            <p>Durée en service : <span id="service-duration">00:00:00</span></p>
+            <p>Rapports effectués : <span id="reports-count">0</span></p>
+        </div>
+
+        <!-- Alertes en cours -->
+        <div class="alert-container">
+            <h3>Alertes en cours</h3>
+            <p>Aucune alerte pour le moment.</p>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <footer>
+        <p>LSPD - Tous droits réservés © 2024</p>
+    </footer>
+
+    <!-- Script pour gérer la connexion à Discord et afficher l'image de profil -->
+    <script src="user.js"></script>
 </body>
 </html>
